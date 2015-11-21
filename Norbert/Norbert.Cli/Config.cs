@@ -41,6 +41,8 @@ namespace Norbert.Cli
             if (string.IsNullOrWhiteSpace(config.QuitMsg))
                 throw new LoadConfigException("quitMsg invalid");
 
+            Log.Debug("Finished loading App.config");
+
             return config;
         }
     }
