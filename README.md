@@ -1,2 +1,2 @@
-# norbert
+# Norbert
 C# IRC bot
