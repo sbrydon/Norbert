@@ -1,10 +1,13 @@
 ﻿using System.Configuration;
+using log4net;
 using Norbert.Cli.Exceptions;
 
 namespace Norbert.Cli
 {
     public class Config
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Config));
+
         public string Server { get; private set; }
         public string Nick { get; private set; }
         public string User { get; private set; }
@@ -13,6 +16,8 @@ namespace Norbert.Cli
 
         public static Config Load()
         {
+            Log.Debug("Loading App.config..");
+
             var appSettings = ConfigurationManager.AppSettings;
             var config = new Config { Server = appSettings.Get("server") };
 
