@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Norbert.Modules.Common\Norbert.Modules.Common.csproj">
-      <Project>{e3318474-7d7f-42fb-b6fc-fe73d9301f97}</Project>
+      <Project>{E3318474-7D7F-42FB-B6FC-FE73D9301F97}</Project>
       <Name>Norbert.Modules.Common</Name>
     </ProjectReference>
   </ItemGroup>
