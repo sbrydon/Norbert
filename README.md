@@ -1,0 +1,2 @@
+# norbert
+C# IRC bot
