@@ -3,6 +3,7 @@ using System.Configuration;
 using ChatSharp;
 using log4net;
 using Norbert.Cli.Exceptions;
+using Norbert.Modules.Common;
 
 namespace Norbert.Cli
 {

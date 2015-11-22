@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatClient.cs" />
     <Compile Include="Exceptions\ConfigException.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +63,12 @@
     </None>
     <None Include="App.example.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Norbert.Modules.Common\Norbert.Modules.Common.csproj">
+      <Project>{E3318474-7D7F-42FB-B6FC-FE73D9301F97}</Project>
+      <Name>Norbert.Modules.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

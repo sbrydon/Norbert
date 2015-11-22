@@ -2,5 +2,6 @@
 {
     public interface INorbertModule
     {
+        void Initialise(IChatClient client);
     }
 }
