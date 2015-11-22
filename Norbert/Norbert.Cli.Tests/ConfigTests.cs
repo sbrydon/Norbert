@@ -24,6 +24,18 @@ namespace Norbert.Cli.Tests
         }
 
         [TestMethod]
+        public void Ctor_Valid_Settings_Sets()
+        {
+            var config = new Config(_appSettings);
+
+            Assert.AreEqual(config.Server, _appSettings.Get("server"));
+            Assert.AreEqual(config.Nick, _appSettings.Get("nick"));
+            Assert.AreEqual(config.User, _appSettings.Get("user"));
+            CollectionAssert.AreEqual(config.Channels, _appSettings.Get("channels").Split());
+            Assert.AreEqual(config.QuitMsg, _appSettings.Get("quitMsg"));
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ConfigException))]
         public void Ctor_Invalid_Server_Throws()
         {
