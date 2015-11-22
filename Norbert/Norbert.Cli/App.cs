@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using ChatSharp;
 using log4net;
 using Norbert.Cli.Exceptions;
 
@@ -28,19 +27,9 @@ namespace Norbert.Cli
                 return;
             }
 
-            var client = new IrcClient(_config.Server, new IrcUser(_config.Nick, _config.User));
-            client.ConnectionComplete += (s, e) =>
-            {
-                Log.Info($"Connected to {_config.Server}, joining channels..");
+            var client = new ChatClient(_config);
+            _moduleManager = new ModuleManager(client);
 
-                foreach (var channel in _config.Channels)
-                {
-                    client.JoinChannel(channel);
-                    Log.Info($"Joined {_config.Server}/{channel}");
-                }
-            };
-
-            _moduleManager = new ModuleManager(new ChatClient(client));
             try
             {
                 _moduleManager.LoadModules();
@@ -51,14 +40,11 @@ namespace Norbert.Cli
                 Log.Info("Norbert ended");
                 return;
             }
-
-            Log.Info($"Connecting to {_config.Server}..");
-            client.ConnectAsync();
+            
+            client.Connect();
             Console.ReadKey();
 
-            client.Quit(_config.QuitMsg);
-            Log.Info($"Disconnected from {_config.Server}, reason: Quit");
-
+            client.Disconnect();
             _moduleManager.UnloadModules();
 
             Log.Info("Norbert ended");
