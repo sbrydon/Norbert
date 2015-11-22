@@ -1,49 +1,38 @@
-﻿using System.Configuration;
-using log4net;
+﻿using System.Collections.Specialized;
 using Norbert.Cli.Exceptions;
 
 namespace Norbert.Cli
 {
     public class Config
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Config));
+        public string Server { get; }
+        public string Nick { get; }
+        public string User { get; }
+        public string[] Channels { get; }
+        public string QuitMsg { get; }
 
-        public string Server { get; private set; }
-        public string Nick { get; private set; }
-        public string User { get; private set; }
-        public string[] Channels { get; private set; }
-        public string QuitMsg { get; private set; }
-
-        public static Config Load()
+        public Config(NameValueCollection appSettings)
         {
-            Log.Debug("Loading App.config..");
+            Server = appSettings.Get("server");
+            if (string.IsNullOrWhiteSpace(Server))
+                throw new ConfigException("server invalid");
 
-            var appSettings = ConfigurationManager.AppSettings;
-            var config = new Config { Server = appSettings.Get("server") };
+            Nick = appSettings.Get("nick");
+            if (string.IsNullOrWhiteSpace(Nick))
+                throw new ConfigException("nick invalid");
 
-            if (string.IsNullOrWhiteSpace(config.Server))
-                throw new LoadConfigException("server invalid");
-
-            config.Nick = appSettings.Get("nick");
-            if (string.IsNullOrWhiteSpace(config.Nick))
-                throw new LoadConfigException("nick invalid");
-
-            config.User = appSettings.Get("user");
-            if (string.IsNullOrWhiteSpace(config.User))
-                throw new LoadConfigException("user invalid");
+            User = appSettings.Get("user");
+            if (string.IsNullOrWhiteSpace(User))
+                throw new ConfigException("user invalid");
 
             var channels = appSettings.Get("channels");
             if (string.IsNullOrWhiteSpace(channels))
-                throw new LoadConfigException("channels invalid");
-            config.Channels = channels.Split();
+                throw new ConfigException("channels invalid");
+            Channels = channels.Split();
 
-            config.QuitMsg = appSettings.Get("quitMsg");
-            if (string.IsNullOrWhiteSpace(config.QuitMsg))
-                throw new LoadConfigException("quitMsg invalid");
-
-            Log.Debug("Finished loading App.config");
-
-            return config;
+            QuitMsg = appSettings.Get("quitMsg");
+            if (string.IsNullOrWhiteSpace(QuitMsg))
+                throw new ConfigException("quitMsg invalid");
         }
     }
 }
