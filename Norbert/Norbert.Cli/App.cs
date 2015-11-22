@@ -3,7 +3,6 @@ using System.Configuration;
 using ChatSharp;
 using log4net;
 using Norbert.Cli.Exceptions;
-using Norbert.Modules.Common;
 
 namespace Norbert.Cli
 {
@@ -11,6 +10,7 @@ namespace Norbert.Cli
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(App));
         private static Config _config;
+        private static ModuleManager _moduleManager;
 
         static void Main(string[] args)
         {
@@ -39,6 +39,18 @@ namespace Norbert.Cli
                     Log.Info($"Joined {_config.Server}/{channel}");
                 }
             };
+
+            _moduleManager = new ModuleManager(new ChatClient(client));
+            try
+            {
+                _moduleManager.LoadModules();
+            }
+            catch (LoadModuleException e)
+            {
+                Log.Fatal(e.Message);
+                Log.Info("Norbert ended");
+                return;
+            }
 
             Log.Info($"Connecting to {_config.Server}..");
             client.ConnectAsync();
