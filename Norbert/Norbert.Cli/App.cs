@@ -58,6 +58,9 @@ namespace Norbert.Cli
 
             client.Quit(_config.QuitMsg);
             Log.Info($"Disconnected from {_config.Server}, reason: Quit");
+
+            _moduleManager.UnloadModules();
+
             Log.Info("Norbert ended");
         }
     }

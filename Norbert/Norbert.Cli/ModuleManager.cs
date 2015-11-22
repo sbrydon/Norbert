@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,6 +13,7 @@ namespace Norbert.Cli
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ModuleManager));
         private readonly IChatClient _client;
+        private readonly List<INorbertModule> _modules = new List<INorbertModule>(); 
 
         public ModuleManager(IChatClient client)
         {
@@ -23,7 +25,7 @@ namespace Norbert.Cli
             Log.Info("Loading modules..");
 
             var modulesPath = $"{AppDomain.CurrentDomain.BaseDirectory}Modules";
-            var files = Directory.EnumerateFiles(modulesPath, "*.dll", SearchOption.AllDirectories);
+            var files = Directory.EnumerateFiles(modulesPath, "*.dll");
 
             foreach (var file in files)
             {
@@ -34,14 +36,26 @@ namespace Norbert.Cli
                     var type = assembly.GetType(typeName);
 
                     var module = (INorbertModule) Activator.CreateInstance(type);
-                    module.Initialise(_client);
+                    module.Loaded(_client);
 
+                    _modules.Add(module);
                     Log.Info($"{module.GetType().Name} loaded");
                 }
                 catch (Exception)
                 {
                     throw new LoadModuleException(file);
                 }
+            }
+        }
+
+        public void UnloadModules()
+        {
+            Log.Info("Unloading modules..");
+
+            foreach (var module in _modules)
+            {
+                module.Unloaded();
+                Log.Info($"{module.GetType().Name} unloaded");
             }
         }
     }

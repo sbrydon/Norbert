@@ -6,10 +6,15 @@ namespace Norbert.Modules.ChatLog
     {
         private IChatClient _client;
 
-        public void Initialise(IChatClient client)
+        public void Loaded(IChatClient client)
         {
             _client = client;
             _client.MessageReceived += OnMessageReceived;
+        }
+
+        public void Unloaded()
+        {
+            
         }
 
         private void OnMessageReceived(object sender, MessageEventArgs eventArgs)
