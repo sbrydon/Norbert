@@ -2,18 +2,22 @@
 using System.IO;
 using log4net;
 using Norbert.Modules.Common;
+using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.ChatLog
 {
     public class ChatLog : INorbertModule
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLog));
+        private ConfigLoader _configLoader;
         private IChatClient _client;
         private string _path;
 
-        public void Loaded(IChatClient client)
+        public void Loaded(ConfigLoader configLoader, IChatClient client)
         {
+            _configLoader = configLoader;
             _client = client;
+
             _client.MessageReceived += OnMessageReceived;
             SetupPath();
         }
@@ -29,15 +33,24 @@ namespace Norbert.Modules.ChatLog
 
         private void SetupPath()
         {
-            var path = Properties.Settings.Default.Path;
-            if (string.IsNullOrWhiteSpace(path))
+            var config = new Config();
+            try
             {
-                _path = $"{AppDomain.CurrentDomain.BaseDirectory}ChatLogs";
+                config = _configLoader.Load<Config>("ChatLog/Config.json");
+            }
+            catch (LoadConfigException e)
+            {
+                Log.Error(e.Message);
+            }
+
+            if (string.IsNullOrWhiteSpace(config.Path))
+            {
+                _path = "ChatLogs";
                 Log.Info("No path specified, using default");
             }
             else
             {
-                _path = path;
+                _path = config.Path;
             }
 
             try

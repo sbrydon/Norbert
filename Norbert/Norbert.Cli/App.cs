@@ -2,6 +2,7 @@
 using System.Configuration;
 using log4net;
 using Norbert.Cli.Exceptions;
+using Norbert.Modules.Common;
 
 namespace Norbert.Cli
 {
@@ -28,7 +29,7 @@ namespace Norbert.Cli
             }
 
             var client = new ChatClient(_config);
-            _moduleManager = new ModuleManager(client);
+            _moduleManager = new ModuleManager(new ConfigLoader("Modules"), client);
 
             try
             {
