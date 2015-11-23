@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using Norbert.Modules.Common;
 using Norbert.Modules.Common.Exceptions;
 
-namespace Norbert.Modules.Common
+namespace Norbert.Cli
 {
-    public class ConfigLoader
+    public class ConfigLoader : IConfigLoader
     {
         private readonly string _basePath;
 

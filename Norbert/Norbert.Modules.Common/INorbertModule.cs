@@ -2,7 +2,7 @@
 {
     public interface INorbertModule
     {
-        void Loaded(ConfigLoader configLoader, IChatClient client);
+        void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, IChatClient client);
         void Unloaded();
     }
 }

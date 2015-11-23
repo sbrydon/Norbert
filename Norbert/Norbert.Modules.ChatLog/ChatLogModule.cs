@@ -1,21 +1,22 @@
 ﻿using System;
-using System.IO;
 using log4net;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.ChatLog
 {
-    public class ChatLog : INorbertModule
+    public class ChatLogModule : INorbertModule
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLog));
-        private ConfigLoader _configLoader;
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLogModule));
+        private IConfigLoader _configLoader;
+        private IFileSystem _fileSystem;
         private IChatClient _client;
         private string _path;
 
-        public void Loaded(ConfigLoader configLoader, IChatClient client)
+        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, IChatClient client)
         {
             _configLoader = configLoader;
+            _fileSystem = fileSystem;
             _client = client;
 
             _client.MessageReceived += OnMessageReceived;
@@ -55,14 +56,14 @@ namespace Norbert.Modules.ChatLog
 
             try
             {
-                if (Directory.Exists(_path))
+                if (_fileSystem.DirectoryExists(_path))
                 {
                     Log.Info("Path exists, skipping creation");
                 }
                 else
                 {
                     Log.Info("Path does not exist, creating it..");
-                    Directory.CreateDirectory(_path);
+                    _fileSystem.CreateDirectory(_path);
                 }
 
                 Log.Info($"Path is '{_path}'");
@@ -80,12 +81,10 @@ namespace Norbert.Modules.ChatLog
 
             try
             {
-                using (var writer = File.AppendText($"{_path}/{file}"))
-                {
-                    var entry = $"[{DateTime.Now}] <{msg.Nick}> {msg.Message}";
-                    Log.Debug($"{file}: {entry}");
-                    writer.WriteLine(entry);
-                }
+                var entry = $"[{DateTime.Now}] <{msg.Nick}> {msg.Message}";
+                Log.Debug($"{file}: {entry}");
+
+                _fileSystem.AppendText($"{_path}/{file}", entry);
             }
             catch (Exception e)
             {

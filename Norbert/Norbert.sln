@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.ChatLog", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Cli.Tests", "Norbert.Cli.Tests\Norbert.Cli.Tests.csproj", "{F1867B35-5D0D-4E65-89D6-97512D621FF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Tests", "Norbert.Modules.Tests\Norbert.Modules.Tests.csproj", "{CE101378-B9C0-4F9D-93F1-E78DAC8F9802}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,11 +37,16 @@ Global
 		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE101378-B9C0-4F9D-93F1-E78DAC8F9802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE101378-B9C0-4F9D-93F1-E78DAC8F9802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE101378-B9C0-4F9D-93F1-E78DAC8F9802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE101378-B9C0-4F9D-93F1-E78DAC8F9802}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3972258B-DC82-4BD1-B035-00EBE8A78970} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
+		{CE101378-B9C0-4F9D-93F1-E78DAC8F9802} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
 	EndGlobalSection
 EndGlobal

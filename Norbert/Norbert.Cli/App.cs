@@ -3,7 +3,6 @@ using System.Configuration;
 using log4net;
 using Norbert.Cli.Exceptions;
 using Norbert.Cli.Irc;
-using Norbert.Modules.Common;
 
 namespace Norbert.Cli
 {
@@ -32,7 +31,7 @@ namespace Norbert.Cli
 
             var adapter = new IrcClientAdapter(_config.Server, _config.Nick, _config.User);
             var client = new ChatClient(_config, adapter);
-            _moduleManager = new ModuleManager(new ConfigLoader("Modules"), client);
+            _moduleManager = new ModuleManager(new ConfigLoader("Modules"), new FileSystem(), client);
 
             try
             {

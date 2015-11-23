@@ -50,8 +50,6 @@ namespace Norbert.Cli.Tests
 
             var client = new ChatClient(_config, mock.Object);
             client.Disconnect();
-
-            mock.Verify();
         }
 
         [TestMethod]

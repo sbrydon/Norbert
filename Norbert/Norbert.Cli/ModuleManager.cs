@@ -12,13 +12,15 @@ namespace Norbert.Cli
     public class ModuleManager
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ModuleManager));
-        private readonly ConfigLoader _configLoader;
+        private readonly IConfigLoader _configLoader;
+        private readonly IFileSystem _fileSystem;
         private readonly IChatClient _client;
-        private readonly List<INorbertModule> _modules = new List<INorbertModule>(); 
+        private readonly List<INorbertModule> _modules = new List<INorbertModule>();
 
-        public ModuleManager(ConfigLoader configLoader, IChatClient client)
+        public ModuleManager(IConfigLoader configLoader, IFileSystem fileSystem, IChatClient client)
         {
             _configLoader = configLoader;
+            _fileSystem = fileSystem;
             _client = client;
         }
 
@@ -31,7 +33,7 @@ namespace Norbert.Cli
                 .EnumerateFiles(modulesPath, "*.dll", SearchOption.AllDirectories)
                 .ToArray();
 
-            if(!files.Any())
+            if (!files.Any())
                 Log.Warn("No modules found!");
 
             foreach (var file in files)
@@ -45,7 +47,7 @@ namespace Norbert.Cli
                     var module = (INorbertModule) Activator.CreateInstance(type);
                     _modules.Add(module);
 
-                    module.Loaded(_configLoader, _client);
+                    module.Loaded(_configLoader, _fileSystem, _client);
                     Log.Info($"{module.GetType().Name} loaded");
                 }
                 catch (Exception e)
