@@ -1,42 +1,40 @@
 ﻿using System;
 using System.Net.Sockets;
-using ChatSharp;
-using ChatSharp.Events;
 using log4net;
 using Norbert.Modules.Common;
 
-namespace Norbert.Cli
+namespace Norbert.Cli.Irc
 {
     public class ChatClient : IChatClient
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ChatClient));
         private readonly Config _config;
-        private readonly IrcClient _client;
+        private readonly IIrcClientAdapter _adapter;
 
-        public event EventHandler<MessageEventArgs> MessageReceived = delegate { };
+        public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
 
-        public ChatClient(Config config)
+        public ChatClient(Config config, IIrcClientAdapter adapter)
         {
             _config = config;
-            _client = new IrcClient(_config.Server, new IrcUser(_config.Nick, _config.User));
+            _adapter = adapter;
 
-            _client.ConnectionComplete += (s, e) =>
+            _adapter.ConnectionComplete += (s, e) =>
             {
                 Log.Info($"Connected to {_config.Server}, joining channels..");
 
                 foreach (var channel in _config.Channels)
                 {
-                    _client.JoinChannel(channel);
+                    _adapter.JoinChannel(channel);
                     Log.Info($"Joined {_config.Server}/{channel}");
                 }
             };
 
-            _client.PrivateMessageRecieved += OnPrivateMessageReceived;
+            _adapter.MessageReceived += (s, e) => MessageReceived(s, e);
         }
 
         public void Connect()
         {
-            _client.ConnectAsync();
+            _adapter.ConnectAsync();
             Log.Info($"Connecting to {_config.Server}..");
         }
 
@@ -44,7 +42,7 @@ namespace Norbert.Cli
         {
             try
             {
-                _client.Quit(_config.QuitMsg);
+                _adapter.Quit(_config.QuitMsg);
             }
             catch (SocketException)
             {
@@ -56,14 +54,7 @@ namespace Norbert.Cli
 
         public void SendMessage(string message, params string[] destinations)
         {
-            _client.SendMessage(message, destinations);
-        }
-
-        private void OnPrivateMessageReceived(object sender, PrivateMessageEventArgs eventArgs)
-        {
-            var msg = eventArgs.PrivateMessage;
-            var msgEventArgs = new MessageEventArgs(!msg.IsChannelMessage, msg.Source, msg.User.Nick, msg.Message);
-            MessageReceived(this, msgEventArgs);
+            _adapter.SendMessage(message, destinations);
         }
     }
 }

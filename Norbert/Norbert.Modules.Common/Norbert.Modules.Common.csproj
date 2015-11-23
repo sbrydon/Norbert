@@ -50,7 +50,7 @@
   <ItemGroup>
     <Compile Include="ConfigLoader.cs" />
     <Compile Include="Exceptions\LoadConfigException.cs" />
-    <Compile Include="MessageEventArgs.cs" />
+    <Compile Include="MessageReceivedEventArgs.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="INorbertModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,14 +13,7 @@ namespace Norbert.Cli.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _appSettings = new NameValueCollection
-            {
-                { "server", "irc.example.org" },
-                { "nick", "norbert" },
-                { "user", "norbert" },
-                { "channels", "#chan1 #chan2" },
-                { "quitMsg", "Bye!" }
-            };
+            _appSettings = ConfigHelper.ValidNameValueCollection;
         }
 
         [TestMethod]

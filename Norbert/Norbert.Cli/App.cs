@@ -2,6 +2,7 @@
 using System.Configuration;
 using log4net;
 using Norbert.Cli.Exceptions;
+using Norbert.Cli.Irc;
 using Norbert.Modules.Common;
 
 namespace Norbert.Cli
@@ -14,7 +15,8 @@ namespace Norbert.Cli
 
         static void Main(string[] args)
         {
-            Console.WriteLine($"Starting Norbert, press any key to exit {Environment.NewLine}");
+            Console.WriteLine("Starting Norbert, press any key to exit");
+            Console.WriteLine();
             Log.Info("Norbert started");
 
             try
@@ -28,7 +30,8 @@ namespace Norbert.Cli
                 return;
             }
 
-            var client = new ChatClient(_config);
+            var adapter = new IrcClientAdapter(_config.Server, _config.Nick, _config.User);
+            var client = new ChatClient(_config, adapter);
             _moduleManager = new ModuleManager(new ConfigLoader("Modules"), client);
 
             try

@@ -26,7 +26,7 @@ namespace Norbert.Modules.ChatLog
         {
         }
 
-        private void OnMessageReceived(object sender, MessageEventArgs eventArgs)
+        private void OnMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
         {
             AppendToLog(eventArgs);
         }
@@ -46,7 +46,7 @@ namespace Norbert.Modules.ChatLog
             if (string.IsNullOrWhiteSpace(config.Path))
             {
                 _path = "ChatLogs";
-                Log.Info("No path specified, using default");
+                Log.Info("No path specified, using 'ChatLogs'");
             }
             else
             {
@@ -65,16 +65,16 @@ namespace Norbert.Modules.ChatLog
                     Directory.CreateDirectory(_path);
                 }
 
-                Log.Info($"Path is {_path}");
+                Log.Info($"Path is '{_path}'");
             }
             catch (Exception e)
             {
-                Log.Error($"Error creating {_path}: {e.Message}");
+                Log.Error($"Error creating '{_path}': {e.Message}");
                 Log.Error("Path not set");
             }
         }
 
-        private void AppendToLog(MessageEventArgs msg)
+        private void AppendToLog(MessageReceivedEventArgs msg)
         {
             var file = $"{msg.Source}.log";
 

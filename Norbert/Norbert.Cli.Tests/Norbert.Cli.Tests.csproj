@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -52,6 +56,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ChatClientTests.cs" />
+    <Compile Include="ConfigHelper.cs" />
     <Compile Include="ConfigTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -60,6 +66,13 @@
       <Project>{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}</Project>
       <Name>Norbert.Cli</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Norbert.Modules.Common\Norbert.Modules.Common.csproj">
+      <Project>{e3318474-7d7f-42fb-b6fc-fe73d9301f97}</Project>
+      <Name>Norbert.Modules.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
