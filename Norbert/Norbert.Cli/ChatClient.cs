@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using ChatSharp;
 using ChatSharp.Events;
 using log4net;
@@ -41,7 +42,15 @@ namespace Norbert.Cli
 
         public void Disconnect()
         {
-            _client.Quit(_config.QuitMsg);
+            try
+            {
+                _client.Quit(_config.QuitMsg);
+            }
+            catch (SocketException)
+            {
+                Log.Error($"Socket error when sending 'Quit' to {_config.Server}");
+            }
+
             Log.Info($"Disconnected from {_config.Server}, reason: Quit");
         }
 

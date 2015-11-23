@@ -36,9 +36,9 @@ namespace Norbert.Cli
                     var type = assembly.GetType(typeName);
 
                     var module = (INorbertModule) Activator.CreateInstance(type);
-                    module.Loaded(_client);
-
                     _modules.Add(module);
+
+                    module.Loaded(_client);
                     Log.Info($"{module.GetType().Name} loaded");
                 }
                 catch (Exception)
