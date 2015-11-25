@@ -1,6 +1,7 @@
 ﻿using System;
 using log4net;
 using Norbert.Modules.Common;
+using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.ChatLog
@@ -10,26 +11,22 @@ namespace Norbert.Modules.ChatLog
         private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLogModule));
         private IConfigLoader _configLoader;
         private IFileSystem _fileSystem;
-        private IChatClient _client;
+        private IChatClient _chatClient;
         private string _path;
 
-        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, IChatClient client)
+        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
+            IChatClient chatClient, IHttpService httpService)
         {
             _configLoader = configLoader;
             _fileSystem = fileSystem;
-            _client = client;
+            _chatClient = chatClient;
 
-            _client.MessageReceived += OnMessageReceived;
+            _chatClient.MessageReceived += OnMessageReceived;
             SetupPath();
         }
 
         public void Unloaded()
         {
-        }
-
-        private void OnMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
-        {
-            AppendToLog(eventArgs);
         }
 
         private void SetupPath()
@@ -73,6 +70,11 @@ namespace Norbert.Modules.ChatLog
                 Log.Error($"Error creating '{_path}': {e.Message}");
                 Log.Error("Path not set");
             }
+        }
+
+        private void OnMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
+        {
+            AppendToLog(eventArgs);
         }
 
         private void AppendToLog(MessageReceivedEventArgs msg)

@@ -1,17 +1,19 @@
 ﻿using System;
 
-namespace Norbert.Modules.Common
+namespace Norbert.Modules.Common.Events
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public bool IsPrivateMessage { get; }
+        public bool IsPrivate { get; }
+        public bool IsCommand { get; }
         public string Source { get; }
         public string Nick { get; }
         public string Message { get; }
 
-        public MessageReceivedEventArgs(bool isPrivateMessage, string source, string nick, string message)
+        public MessageReceivedEventArgs(bool isPrivate, bool isCommand, string source, string nick, string message)
         {
-            IsPrivateMessage = isPrivateMessage;
+            IsPrivate = isPrivate;
+            IsCommand = isCommand;
             Source = source;
             Nick = nick;
             Message = message;

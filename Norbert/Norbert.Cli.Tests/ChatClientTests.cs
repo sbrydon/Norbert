@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Norbert.Cli.Irc;
 using Norbert.Modules.Common;
+using Norbert.Modules.Common.Events;
 
 namespace Norbert.Cli.Tests
 {
@@ -79,7 +80,7 @@ namespace Norbert.Cli.Tests
         public void Message_Received_Message_Received_Raised()
         {
             var mock = new Mock<IIrcClientAdapter>();
-            var expEventArgs = new MessageReceivedEventArgs(false, "#chan1", "jim", "hi");
+            var expEventArgs = new MessageReceivedEventArgs(false, false, "#chan1", "jim", "hi");
 
             var client = new ChatClient(_config, mock.Object);
             var raisedWithArgs = false;

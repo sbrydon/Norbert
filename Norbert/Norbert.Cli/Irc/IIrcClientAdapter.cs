@@ -1,5 +1,6 @@
 using System;
 using Norbert.Modules.Common;
+using Norbert.Modules.Common.Events;
 
 namespace Norbert.Cli.Irc
 {

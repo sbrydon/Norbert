@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Norbert.Modules.ChatLog;
 using Norbert.Modules.Common;
+using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
 
-namespace Norbert.Modules.Tests.ChatLog
+namespace Norbert.Modules.ChatLog.Tests
 {
     [TestClass]
     public class ChatLogModuleTests
@@ -38,7 +38,7 @@ namespace Norbert.Modules.Tests.ChatLog
                 .Setup(m => m.Load<Config>(path))
                 .Returns(new Config());
 
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
 
             _mockLoader.Verify(m => m.Load<Config>(path));
         }
@@ -50,13 +50,13 @@ namespace Norbert.Modules.Tests.ChatLog
                 .Setup(m => m.Load<Config>(It.IsAny<string>()))
                 .Throws(new LoadConfigException(null, null));
 
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
         }
 
         [TestMethod]
         public void Loaded_No_Log_Path_Creates_Default_Log_Dir()
         {
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
 
             _mockFileSystem.Verify(m => m.CreateDirectory("ChatLogs"));
         }
@@ -68,7 +68,7 @@ namespace Norbert.Modules.Tests.ChatLog
                 .Setup(m => m.Load<Config>(It.IsAny<string>()))
                 .Returns(new Config {Path = "Custom"});
 
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
 
             _mockFileSystem.Verify(m => m.CreateDirectory("Custom"));
         }
@@ -80,7 +80,7 @@ namespace Norbert.Modules.Tests.ChatLog
                 .Setup(m => m.DirectoryExists(It.IsAny<string>()))
                 .Returns(true);
 
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
 
             _mockFileSystem.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Never);
         }
@@ -92,15 +92,15 @@ namespace Norbert.Modules.Tests.ChatLog
                 .Setup(m => m.DirectoryExists(It.IsAny<string>()))
                 .Throws(new Exception());
 
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
         }
 
         [TestMethod]
         public void Message_Received_Appends_To_Log_File()
         {
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
 
-            var msg = new MessageReceivedEventArgs(false, "#chan1", "JIM", "HELLO");
+            var msg = new MessageReceivedEventArgs(false, false, "#chan1", "JIM", "HELLO");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
             const string file = "ChatLogs/#chan1.log";
@@ -115,9 +115,9 @@ namespace Norbert.Modules.Tests.ChatLog
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
 
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
 
-            var msg = new MessageReceivedEventArgs(false, "", "", "");
+            var msg = new MessageReceivedEventArgs(false, false, "", "", "");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
         }
     }

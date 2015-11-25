@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\MessageReceivedEventArgs.cs" />
+    <Compile Include="Exceptions\HttpServiceException.cs" />
     <Compile Include="Exceptions\LoadConfigException.cs" />
     <Compile Include="IConfigLoader.cs" />
     <Compile Include="IFileSystem.cs" />
-    <Compile Include="MessageReceivedEventArgs.cs" />
+    <Compile Include="IHttpService.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="INorbertModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

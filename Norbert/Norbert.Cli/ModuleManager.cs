@@ -15,13 +15,16 @@ namespace Norbert.Cli
         private readonly IConfigLoader _configLoader;
         private readonly IFileSystem _fileSystem;
         private readonly IChatClient _client;
+        private readonly IHttpService _httpService;
         private readonly List<INorbertModule> _modules = new List<INorbertModule>();
 
-        public ModuleManager(IConfigLoader configLoader, IFileSystem fileSystem, IChatClient client)
+        public ModuleManager(IConfigLoader configLoader, IFileSystem fileSystem, 
+            IChatClient client, IHttpService httpService)
         {
             _configLoader = configLoader;
             _fileSystem = fileSystem;
             _client = client;
+            _httpService = httpService;
         }
 
         public void LoadModules()
@@ -47,7 +50,7 @@ namespace Norbert.Cli
                     var module = (INorbertModule) Activator.CreateInstance(type);
                     _modules.Add(module);
 
-                    module.Loaded(_configLoader, _fileSystem, _client);
+                    module.Loaded(_configLoader, _fileSystem, _client, _httpService);
                     Log.Info($"{module.GetType().Name} loaded");
                 }
                 catch (Exception e)

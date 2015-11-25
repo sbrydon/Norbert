@@ -1,7 +1,7 @@
 ﻿using System;
 using ChatSharp;
 using ChatSharp.Events;
-using Norbert.Modules.Common;
+using Norbert.Modules.Common.Events;
 
 namespace Norbert.Cli.Irc
 {
@@ -19,8 +19,8 @@ namespace Norbert.Cli.Irc
             _client.PrivateMessageRecieved += delegate(object s, PrivateMessageEventArgs e)
             {
                 var msg = e.PrivateMessage;
-                var msgEventArgs = new MessageReceivedEventArgs(!msg.IsChannelMessage, msg.Source,
-                    msg.User.Nick, msg.Message);
+                var msgEventArgs = new MessageReceivedEventArgs(!msg.IsChannelMessage, 
+                    msg.Message.StartsWith(nick), msg.Source, msg.User.Nick, msg.Message);
 
                 MessageReceived(s, msgEventArgs);
             };

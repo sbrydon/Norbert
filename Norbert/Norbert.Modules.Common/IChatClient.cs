@@ -1,4 +1,5 @@
 ﻿using System;
+using Norbert.Modules.Common.Events;
 
 namespace Norbert.Modules.Common
 {

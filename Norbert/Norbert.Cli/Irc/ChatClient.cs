@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using log4net;
 using Norbert.Modules.Common;
+using Norbert.Modules.Common.Events;
 
 namespace Norbert.Cli.Irc
 {
@@ -54,6 +56,7 @@ namespace Norbert.Cli.Irc
 
         public void SendMessage(string message, params string[] destinations)
         {
+            Log.Debug($"Sending message: {string.Join(",", destinations)} -> '{message}'");
             _adapter.SendMessage(message, destinations);
         }
     }

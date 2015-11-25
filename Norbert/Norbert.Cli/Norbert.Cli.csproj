@@ -60,6 +60,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Exceptions\LoadModuleException.cs" />
     <Compile Include="FileSystem.cs" />
+    <Compile Include="HttpService.cs" />
     <Compile Include="Irc\ChatClient.cs" />
     <Compile Include="Irc\IIrcClientAdapter.cs" />
     <Compile Include="Irc\IrcClientAdapter.cs" />

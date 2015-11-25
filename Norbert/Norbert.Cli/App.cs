@@ -31,7 +31,8 @@ namespace Norbert.Cli
 
             var adapter = new IrcClientAdapter(_config.Server, _config.Nick, _config.User);
             var client = new ChatClient(_config, adapter);
-            _moduleManager = new ModuleManager(new ConfigLoader("Modules"), new FileSystem(), client);
+            _moduleManager = new ModuleManager(new ConfigLoader("Modules"), new FileSystem(),
+                client, new HttpService());
 
             try
             {
