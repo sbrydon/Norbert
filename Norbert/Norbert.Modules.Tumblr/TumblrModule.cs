@@ -52,12 +52,12 @@ namespace Norbert.Modules.Tumblr
             if (string.IsNullOrWhiteSpace(config.ApiKey))
             {
                 _apiKey = null;
-                Log.Warn("No api key specified");
+                Log.Warn("No 'apikey' defined in Config.json");
             }
             else
             {
                 _apiKey = config.ApiKey;
-                Log.Info("Using api key from Config.json");
+                Log.Info("Found 'apikey' in Config.json");
             }
         }
 
@@ -103,7 +103,6 @@ namespace Norbert.Modules.Tumblr
         private async Task<dynamic> GetRandomPost(string tag)
         {
             var allPosts = new List<dynamic>();
-
             for (var i = 0; i < 3; i++)
             {
                 var range = (DateTime.Today - MinBefore).Days;
