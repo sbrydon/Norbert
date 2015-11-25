@@ -2,7 +2,7 @@
 
 namespace Norbert.Modules.Common
 {
-    public interface IHttpService
+    public interface IHttpClient
     {
         Task<dynamic> GetAsync(string url);
     }

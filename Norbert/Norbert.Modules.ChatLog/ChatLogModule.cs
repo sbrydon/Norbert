@@ -15,7 +15,7 @@ namespace Norbert.Modules.ChatLog
         private string _path;
 
         public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
-            IChatClient chatClient, IHttpService httpService)
+            IChatClient chatClient, IHttpClient httpClient)
         {
             _configLoader = configLoader;
             _fileSystem = fileSystem;

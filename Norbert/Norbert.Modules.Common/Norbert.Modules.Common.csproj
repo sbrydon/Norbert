@@ -49,7 +49,7 @@
     <Compile Include="Exceptions\LoadConfigException.cs" />
     <Compile Include="IConfigLoader.cs" />
     <Compile Include="IFileSystem.cs" />
-    <Compile Include="IHttpService.cs" />
+    <Compile Include="IHttpClient.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="INorbertModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

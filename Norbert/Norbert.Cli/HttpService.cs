@@ -8,7 +8,7 @@ using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Cli
 {
-    public class HttpService : IHttpService
+    public class HttpService : IHttpClient
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(HttpService));
         private readonly HttpClient _client = new HttpClient();

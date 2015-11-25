@@ -56,7 +56,7 @@ namespace Norbert.Cli.Irc
 
         public void SendMessage(string message, params string[] destinations)
         {
-            Log.Debug($"Sending message: {string.Join(",", destinations)} -> '{message}'");
+            Log.Debug($"Sending: '{message}' -> {string.Join(",", destinations)}");
             _adapter.SendMessage(message, destinations);
         }
     }

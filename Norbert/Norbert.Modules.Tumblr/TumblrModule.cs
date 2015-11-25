@@ -13,19 +13,21 @@ namespace Norbert.Modules.Tumblr
     public class TumblrModule : INorbertModule
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(TumblrModule));
-        private static readonly Regex Regex = new Regex(@"tumblr\s*(?:of\s*)?(?<tag>.*)");
+        private static readonly Regex Regex = 
+            new Regex(@"tumblr\s*(?:of\s*)?(?<tag>.*)", RegexOptions.IgnoreCase);
+
         private static readonly DateTime MinBefore = new DateTime(2010, 1, 1);
         private static readonly Random Random = new Random();
 
         private IConfigLoader _configLoader;
         private IChatClient _chatClient;
-        private IHttpService _httpService;
+        private IHttpClient _httpClient;
         private string _apiKey;
 
         public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
-            IChatClient chatClient, IHttpService httpService)
+            IChatClient chatClient, IHttpClient httpClient)
         {
-            _httpService = httpService;
+            _httpClient = httpClient;
             _chatClient = chatClient;
             _configLoader = configLoader;
 
@@ -72,18 +74,18 @@ namespace Norbert.Modules.Tumblr
             var match = Regex.Match(msg.Message);
             if (!match.Success)
             {
-                Log.Debug("Message ignored: no match found");
+                Log.Debug($"Message ignored: '{msg.Message}' doesn't match '{Regex}'");
                 return;
             }
 
             var tag = match.Groups["tag"].Value;
             if (tag == string.Empty)
             {
-                Log.Debug("Message ignored: empty capture group");
+                Log.Debug($"Message ignored: matches '{Regex}' but <tag> is empty");
                 return;
             }
 
-            Log.Debug($"Replying: matches '{Regex}'");
+            Log.Debug($"Replying: '{msg.Message}' matches '{Regex}', <tag> = '{tag}'");
 
             try
             {
@@ -103,9 +105,10 @@ namespace Norbert.Modules.Tumblr
         private async Task<dynamic> GetRandomPost(string tag)
         {
             var allPosts = new List<dynamic>();
+            var range = (DateTime.Today - MinBefore).Days;
+
             for (var i = 0; i < 3; i++)
             {
-                var range = (DateTime.Today - MinBefore).Days;
                 var before = MinBefore.AddDays(Random.Next(range));
 
                 var posts = await GetPosts(tag, before, 5);
@@ -114,6 +117,7 @@ namespace Norbert.Modules.Tumblr
 
             var index = Random.Next(0, allPosts.Count);
             Log.Debug($"{allPosts.Count} posts found, choosing post {index}");
+
             return allPosts.ElementAtOrDefault(index);
         }
 
@@ -123,8 +127,8 @@ namespace Norbert.Modules.Tumblr
             var q = $"?api_key={_apiKey}&tag={tag}&before={timestamp}&limit={limit}";
 
             string uri = $"http://api.tumblr.com/v2/tagged/{q}";
-            var posts = await _httpService.GetAsync(uri);
-
+            var posts = await _httpClient.GetAsync(uri);
+            
             return ((IEnumerable<dynamic>)posts.response)
                 .Where(p => p.type == "photo")
                 .ToList();
