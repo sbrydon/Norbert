@@ -50,6 +50,7 @@ namespace Norbert.Cli
                     var module = (INorbertModule) Activator.CreateInstance(type);
                     _modules.Add(module);
 
+                    Log.Info($"Loading {module.GetType().Name}..");
                     module.Loaded(_configLoader, _fileSystem, _client, _httpService);
                     Log.Info($"{module.GetType().Name} loaded");
                 }
