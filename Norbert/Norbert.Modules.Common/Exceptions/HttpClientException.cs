@@ -2,9 +2,9 @@
 
 namespace Norbert.Modules.Common.Exceptions
 {
-    public class HttpServiceException : Exception
+    public class HttpClientException : Exception
     {
-        public HttpServiceException(string uri, string message) :
+        public HttpClientException(string uri, string message) :
             base($"Error requesting '{uri}': {message}")
         {
         }

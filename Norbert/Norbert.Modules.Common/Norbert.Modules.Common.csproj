@@ -45,8 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\MessageReceivedEventArgs.cs" />
-    <Compile Include="Exceptions\HttpServiceException.cs" />
+    <Compile Include="Exceptions\HttpClientException.cs" />
     <Compile Include="Exceptions\LoadConfigException.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="IConfigLoader.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IHttpClient.cs" />

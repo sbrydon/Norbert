@@ -26,7 +26,7 @@ namespace Norbert.Cli
             catch (Exception e)
             {
                 Log.Error($"GET error: {e.Message}");
-                throw new HttpServiceException(uri, e.Message);
+                throw new HttpClientException(uri, e.Message);
             }
         }
     }

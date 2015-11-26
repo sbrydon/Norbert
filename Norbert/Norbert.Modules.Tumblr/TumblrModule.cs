@@ -7,13 +7,15 @@ using log4net;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
+using Norbert.Modules.Common.Extensions;
 
 namespace Norbert.Modules.Tumblr
 {
     public class TumblrModule : INorbertModule
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TumblrModule));
-        private static readonly Regex Regex = 
+        private static readonly ILog Log = LogManager.GetLogger(typeof (TumblrModule));
+
+        private static readonly Regex Regex =
             new Regex(@"tumblr\s*(?:of\s*)?(?<tag>.*)", RegexOptions.IgnoreCase);
 
         private static readonly DateTime MinBefore = new DateTime(2010, 1, 1);
@@ -24,7 +26,7 @@ namespace Norbert.Modules.Tumblr
         private IHttpClient _httpClient;
         private string _apiKey;
 
-        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
+        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem,
             IChatClient chatClient, IHttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -90,15 +92,15 @@ namespace Norbert.Modules.Tumblr
             try
             {
                 var post = await GetRandomPost(tag);
-                var tumblrMsg = post == null ? 
-                    "Whoops, no tumblrs found" : 
-                    $"{msg.Nick}: {post.short_url}";
+                var tumblrMsg = post == null
+                    ? $"{msg.Nick}: Whoops, no tumblrs found"
+                    : $"{msg.Nick}: {post.short_url}";
 
                 _chatClient.SendMessage(tumblrMsg, msg.Source);
             }
-            catch (HttpServiceException)
+            catch (HttpClientException)
             {
-                _chatClient.SendMessage("Whoops, something went wrong", msg.Source);
+                _chatClient.SendMessage($"{msg.Nick}: Whoops, something went wrong", msg.Source);
             }
         }
 
@@ -123,15 +125,15 @@ namespace Norbert.Modules.Tumblr
 
         private async Task<List<dynamic>> GetPosts(string tag, DateTime before, int limit)
         {
-            var timestamp = (before.Ticks - 621355968000000000) / 10000000;
+            var timestamp = before.ToTimestamp();
             var q = $"?api_key={_apiKey}&tag={tag}&before={timestamp}&limit={limit}";
 
             string uri = $"http://api.tumblr.com/v2/tagged/{q}";
             var posts = await _httpClient.GetAsync(uri);
-            
-            return ((IEnumerable<dynamic>)posts.response)
+
+            return ((IEnumerable<dynamic>) posts.response)
                 .Where(p => p.type == "photo")
                 .ToList();
-        } 
+        }
     }
 }
