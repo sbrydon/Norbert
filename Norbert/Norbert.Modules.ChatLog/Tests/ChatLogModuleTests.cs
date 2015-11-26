@@ -40,7 +40,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
             LoadModule();
 
-            _mockLoader.Verify(m => m.Load<Config>(path));
+            _mockLoader.Verify(m => m.Load<Config>(path), Times.Once);
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace Norbert.Modules.ChatLog.Tests
         {
             LoadModule();
 
-            _mockFileSystem.Verify(m => m.CreateDirectory("ChatLogs"));
+            _mockFileSystem.Verify(m => m.CreateDirectory("ChatLogs"), Times.Once);
         }
 
         [TestMethod]
@@ -70,7 +70,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
             LoadModule();
 
-            _mockFileSystem.Verify(m => m.CreateDirectory("Custom"));
+            _mockFileSystem.Verify(m => m.CreateDirectory("Custom"), Times.Once);
         }
 
         [TestMethod]
@@ -105,7 +105,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
             const string file = "ChatLogs/#chan1.log";
             const string regex = @"^\[.+\]\s<JIM>\sHELLO$";
-            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)));
+            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)), Times.Once);
         }
 
         [TestMethod]

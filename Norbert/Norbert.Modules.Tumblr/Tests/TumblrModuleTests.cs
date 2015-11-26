@@ -53,7 +53,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            _mockLoader.Verify(m => m.Load<Config>(path));
+            _mockLoader.Verify(m => m.Load<Config>(path), Times.Once);
         }
 
         [TestMethod]
