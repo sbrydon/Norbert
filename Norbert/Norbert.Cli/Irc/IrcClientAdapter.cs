@@ -1,12 +1,14 @@
 ﻿using System;
 using ChatSharp;
 using ChatSharp.Events;
+using log4net;
 using Norbert.Modules.Common.Events;
 
 namespace Norbert.Cli.Irc
 {
     public class IrcClientAdapter : IIrcClientAdapter
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(IrcClientAdapter));
         private readonly IrcClient _client;
 
         public event EventHandler<EventArgs> ConnectionComplete = delegate { };
@@ -24,6 +26,9 @@ namespace Norbert.Cli.Irc
 
                 MessageReceived(s, msgEventArgs);
             };
+
+            _client.RawMessageRecieved += (s, e) => Log.Debug($"<- {e.Message}");
+            _client.RawMessageSent += (s, e) => Log.Debug($"-> {e.Message}");
         }
 
         public void ConnectAsync()

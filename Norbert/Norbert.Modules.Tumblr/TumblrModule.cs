@@ -8,7 +8,7 @@ using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
 using Norbert.Modules.Common.Extensions;
-
+//TODO: Direct link to images!
 namespace Norbert.Modules.Tumblr
 {
     public class TumblrModule : INorbertModule
@@ -112,13 +112,12 @@ namespace Norbert.Modules.Tumblr
             for (var i = 0; i < 3; i++)
             {
                 var before = MinBefore.AddDays(Random.Next(range));
-
                 var posts = await GetPosts(tag, before, 5);
                 allPosts.AddRange(posts);
             }
 
             var index = Random.Next(0, allPosts.Count);
-            Log.Debug($"{allPosts.Count} posts found, choosing post {index}");
+            Log.Debug($"{allPosts.Count} posts found, choosing post {index + 1}");
 
             return allPosts.ElementAtOrDefault(index);
         }

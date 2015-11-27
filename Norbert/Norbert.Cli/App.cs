@@ -3,7 +3,7 @@ using System.Configuration;
 using log4net;
 using Norbert.Cli.Exceptions;
 using Norbert.Cli.Irc;
-
+//TODO: Rename to just 'Norbert'!
 namespace Norbert.Cli
 {
     class App
