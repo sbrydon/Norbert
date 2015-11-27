@@ -21,7 +21,8 @@ namespace Norbert.Modules.ChatLog
             _fileSystem = fileSystem;
             _chatClient = chatClient;
 
-            _chatClient.MessageReceived += OnMessageReceived;
+            _chatClient.MessageReceived += (s, e) => AppendToLog(e);
+            _chatClient.MessageSent += (s, e) => AppendToLog(e);
             SetupPath();
         }
 
@@ -72,12 +73,7 @@ namespace Norbert.Modules.ChatLog
             }
         }
 
-        private void OnMessageReceived(object sender, MessageReceivedEventArgs eventArgs)
-        {
-            AppendToLog(eventArgs);
-        }
-
-        private void AppendToLog(MessageReceivedEventArgs msg)
+        private void AppendToLog(MessageEventArgs msg)
         {
             var file = $"{msg.Source}.log";
 

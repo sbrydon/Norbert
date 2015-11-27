@@ -6,7 +6,8 @@ namespace Norbert.Cli.Irc
     public interface IIrcClientAdapter
     {
         event EventHandler<EventArgs> ConnectionComplete;
-        event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        event EventHandler<MessageEventArgs> MessageReceived;
+        event EventHandler<MessageEventArgs> MessageSent;
         void ConnectAsync();
         void Quit(string reason);
         void JoinChannel(string channel);

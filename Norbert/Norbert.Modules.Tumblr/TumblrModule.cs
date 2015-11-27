@@ -65,7 +65,7 @@ namespace Norbert.Modules.Tumblr
             }
         }
 
-        private async void OnMessageReceived(object sender, MessageReceivedEventArgs msg)
+        private async void OnMessageReceived(object sender, MessageEventArgs msg)
         {
             if (msg.IsPrivate || !msg.IsCommand)
             {

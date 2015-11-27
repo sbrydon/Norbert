@@ -100,7 +100,7 @@ namespace Norbert.Modules.ChatLog.Tests
         {
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, false, "#chan1", "JIM", "HELLO");
+            var msg = new MessageEventArgs(false, false, "#chan1", "JIM", "HELLO");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
             const string file = "ChatLogs/#chan1.log";
@@ -117,8 +117,40 @@ namespace Norbert.Modules.ChatLog.Tests
 
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, false, "", "", "");
+            var msg = new MessageEventArgs(false, false, "", "", "");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
+
+            _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()),
+                Times.Once);
+        }
+
+        [TestMethod]
+        public void Message_Sent_Appends_To_Log_File()
+        {
+            LoadModule();
+
+            var msg = new MessageEventArgs(false, false, "#chan1", "NORBERT", "WELCOME");
+            _mockClient.Raise(m => m.MessageSent += null, msg);
+
+            const string file = "ChatLogs/#chan1.log";
+            const string regex = @"^\[.+\]\s<NORBERT>\sWELCOME$";
+            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)), Times.Once);
+        }
+
+        [TestMethod]
+        public void Message_Sent_Exception_Caught()
+        {
+            _mockFileSystem
+                .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
+                .Throws(new Exception());
+
+            LoadModule();
+
+            var msg = new MessageEventArgs(false, false, "", "", "");
+            _mockClient.Raise(m => m.MessageSent += null, msg);
+
+            _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()), 
+                Times.Once);
         }
 
         private void LoadModule()

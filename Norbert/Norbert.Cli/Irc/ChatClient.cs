@@ -12,7 +12,8 @@ namespace Norbert.Cli.Irc
         private readonly Config _config;
         private readonly IIrcClientAdapter _adapter;
 
-        public event EventHandler<MessageReceivedEventArgs> MessageReceived = delegate { };
+        public event EventHandler<MessageEventArgs> MessageReceived = delegate { };
+        public event EventHandler<MessageEventArgs> MessageSent = delegate { }; 
 
         public ChatClient(Config config, IIrcClientAdapter adapter)
         {
@@ -31,6 +32,7 @@ namespace Norbert.Cli.Irc
             };
 
             _adapter.MessageReceived += (s, e) => MessageReceived(s, e);
+            _adapter.MessageSent += (s, e) => MessageSent(s, e);
         }
 
         public void Connect()

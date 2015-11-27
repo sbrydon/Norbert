@@ -71,7 +71,7 @@ namespace Norbert.Modules.Tumblr.Tests
         {
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(true, true, null, null, ValidCmd1);
+            var msg = new MessageEventArgs(true, true, null, null, ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()), 
@@ -83,7 +83,7 @@ namespace Norbert.Modules.Tumblr.Tests
         {
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, false, null, null, ValidCmd1);
+            var msg = new MessageEventArgs(false, false, null, null, ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()), 
@@ -95,10 +95,10 @@ namespace Norbert.Modules.Tumblr.Tests
         {
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, true, null, null, InvalidCmd1);
+            var msg = new MessageEventArgs(false, true, null, null, InvalidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
-            msg = new MessageReceivedEventArgs(false, true, null, null, InvalidCmd2);
+            msg = new MessageEventArgs(false, true, null, null, InvalidCmd2);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()),
@@ -114,9 +114,9 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
+            var msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
-            msg = new MessageReceivedEventArgs(false, true, "#chan1", "JIM", ValidCmd2);
+            msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd2);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(@"JIM:\s.+"), "#chan1"), 
@@ -132,7 +132,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, true, null, null, ValidCmd1);
+            var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             const string regex = @"http:\/\/api\.tumblr\.com\/v2\/tagged\/.*tag=burger.*";
@@ -148,7 +148,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
+            var msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             const string regex = @"JIM:\sWhoops, something went wrong";
@@ -164,7 +164,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageReceivedEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
+            var msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
             const string regex = @"JIM:\sWhoops, no tumblrs found";
@@ -182,7 +182,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             for (var i = 1; i <= 10; i++)
             {
-                var msg = new MessageReceivedEventArgs(false, true, null, null, ValidCmd1);
+                var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
                 _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
                 _mockChatClient.Verify(m => m.SendMessage(It.IsRegex("photo_url"), It.IsAny<string[]>()),
@@ -201,7 +201,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             for (var i = 1; i <= 10; i++)
             {
-                var msg = new MessageReceivedEventArgs(false, true, null, null, ValidCmd1);
+                var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
                 _mockChatClient.Raise(m => m.MessageReceived += null, msg);
             }
 
