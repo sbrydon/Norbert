@@ -3,7 +3,7 @@ using log4net;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
-//TODO: Log what norbert says
+
 namespace Norbert.Modules.ChatLog
 {
     public class ChatLogModule : INorbertModule

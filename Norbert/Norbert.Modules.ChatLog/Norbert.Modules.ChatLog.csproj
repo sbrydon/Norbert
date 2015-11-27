@@ -73,8 +73,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(TargetFileName)" "$(SolutionDir)$(SolutionName).Cli\$(OutDir)Modules\ChatLog\"
-xcopy /y "$(ProjectDir)Config.json" "$(SolutionDir)$(SolutionName).Cli\$(OutDir)Modules\ChatLog\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(TargetFileName)" "$(SolutionDir)$(SolutionName)\$(OutDir)Modules\ChatLog\"
+xcopy /y "$(ProjectDir)Config.json" "$(SolutionDir)$(SolutionName)\$(OutDir)Modules\ChatLog\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

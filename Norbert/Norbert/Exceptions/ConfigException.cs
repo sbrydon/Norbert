@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Norbert.Cli.Exceptions
+namespace Norbert.Exceptions
 {
     public class ConfigException : Exception
     {

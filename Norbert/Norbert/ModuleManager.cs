@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Norbert.Cli.Exceptions;
+using Norbert.Exceptions;
 using Norbert.Modules.Common;
 
-namespace Norbert.Cli
+namespace Norbert
 {
     public class ModuleManager
     {

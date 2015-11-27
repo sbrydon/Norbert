@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Cli", "Norbert.Cli\Norbert.Cli.csproj", "{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Common", "Norbert.Modules.Common\Norbert.Modules.Common.csproj", "{E3318474-7D7F-42FB-B6FC-FE73D9301F97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{4FE55419-11BE-4A4D-B65B-822FC6F97F0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.ChatLog", "Norbert.Modules.ChatLog\Norbert.Modules.ChatLog.csproj", "{3972258B-DC82-4BD1-B035-00EBE8A78970}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Cli.Tests", "Norbert.Cli.Tests\Norbert.Cli.Tests.csproj", "{F1867B35-5D0D-4E65-89D6-97512D621FF8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Tumblr", "Norbert.Modules.Tumblr\Norbert.Modules.Tumblr.csproj", "{F0AB7034-BB12-4F84-8200-85E9C094ACFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert", "Norbert\Norbert.csproj", "{66949111-6D74-48C5-B99D-86615583D47E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Tests", "Norbert.Tests\Norbert.Tests.csproj", "{04B34B81-B0EF-4032-8519-6B44847A7933}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3318474-7D7F-42FB-B6FC-FE73D9301F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3318474-7D7F-42FB-B6FC-FE73D9301F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3318474-7D7F-42FB-B6FC-FE73D9301F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,14 +29,18 @@ Global
 		{3972258B-DC82-4BD1-B035-00EBE8A78970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3972258B-DC82-4BD1-B035-00EBE8A78970}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3972258B-DC82-4BD1-B035-00EBE8A78970}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1867B35-5D0D-4E65-89D6-97512D621FF8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F0AB7034-BB12-4F84-8200-85E9C094ACFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F0AB7034-BB12-4F84-8200-85E9C094ACFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0AB7034-BB12-4F84-8200-85E9C094ACFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0AB7034-BB12-4F84-8200-85E9C094ACFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66949111-6D74-48C5-B99D-86615583D47E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66949111-6D74-48C5-B99D-86615583D47E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66949111-6D74-48C5-B99D-86615583D47E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66949111-6D74-48C5-B99D-86615583D47E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B34B81-B0EF-4032-8519-6B44847A7933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B34B81-B0EF-4032-8519-6B44847A7933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B34B81-B0EF-4032-8519-6B44847A7933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B34B81-B0EF-4032-8519-6B44847A7933}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

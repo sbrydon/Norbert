@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Norbert.Modules.Common;
 
-namespace Norbert.Cli
+namespace Norbert
 {
     public class FileSystem : IFileSystem
     {

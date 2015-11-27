@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace Norbert.Cli.Tests
+namespace Norbert.Tests
 {
     public static class ConfigHelper
     {

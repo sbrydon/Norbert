@@ -1,9 +1,9 @@
 ﻿using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Norbert.Cli.Exceptions;
+using Norbert.Exceptions;
 
-namespace Norbert.Cli.Tests
+namespace Norbert.Tests
 {
     [TestClass]
     public class ConfigTests

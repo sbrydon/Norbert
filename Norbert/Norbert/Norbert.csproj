@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}</ProjectGuid>
+    <ProjectGuid>{66949111-6D74-48C5-B99D-86615583D47E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Norbert.Cli</RootNamespace>
-    <AssemblyName>Norbert.Cli</AssemblyName>
+    <RootNamespace>Norbert</RootNamespace>
+    <AssemblyName>Norbert</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -55,9 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="ConfigLoader.cs" />
     <Compile Include="Exceptions\ConfigException.cs" />
-    <Compile Include="App.cs" />
     <Compile Include="Exceptions\LoadModuleException.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="HttpService.cs" />
@@ -66,12 +67,9 @@
     <Compile Include="Irc\IrcClientAdapter.cs" />
     <Compile Include="ModuleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Config.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="App.example.config" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -81,7 +79,6 @@
       <Name>Norbert.Modules.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

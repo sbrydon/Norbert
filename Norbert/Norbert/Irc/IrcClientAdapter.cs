@@ -4,7 +4,7 @@ using ChatSharp.Events;
 using log4net;
 using Norbert.Modules.Common.Events;
 
-namespace Norbert.Cli.Irc
+namespace Norbert.Irc
 {
     public class IrcClientAdapter : IIrcClientAdapter
     {

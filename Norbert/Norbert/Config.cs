@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
-using Norbert.Cli.Exceptions;
+using Norbert.Exceptions;
 
-namespace Norbert.Cli
+namespace Norbert
 {
     public class Config
     {

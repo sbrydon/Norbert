@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Exceptions;
 
-namespace Norbert.Cli
+namespace Norbert
 {
     public class ConfigLoader : IConfigLoader
     {

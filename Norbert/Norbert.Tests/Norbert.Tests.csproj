@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F1867B35-5D0D-4E65-89D6-97512D621FF8}</ProjectGuid>
+    <ProjectGuid>{04B34B81-B0EF-4032-8519-6B44847A7933}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Norbert.Cli.Tests</RootNamespace>
-    <AssemblyName>Norbert.Cli.Tests</AssemblyName>
+    <RootNamespace>Norbert.Tests</RootNamespace>
+    <AssemblyName>Norbert.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -49,9 +49,7 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -62,17 +60,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Norbert.Cli\Norbert.Cli.csproj">
-      <Project>{3B6274CD-91D2-4ADC-A594-649EF3FEFC9B}</Project>
-      <Name>Norbert.Cli</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Norbert.Modules.Common\Norbert.Modules.Common.csproj">
-      <Project>{e3318474-7d7f-42fb-b6fc-fe73d9301f97}</Project>
-      <Name>Norbert.Modules.Common</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Norbert.Modules.Common\Norbert.Modules.Common.csproj">
+      <Project>{E3318474-7D7F-42FB-B6FC-FE73D9301F97}</Project>
+      <Name>Norbert.Modules.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Norbert\Norbert.csproj">
+      <Project>{66949111-6D74-48C5-B99D-86615583D47E}</Project>
+      <Name>Norbert</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

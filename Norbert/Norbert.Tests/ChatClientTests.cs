@@ -3,11 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Sockets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Norbert.Cli.Irc;
-using Norbert.Modules.Common;
+using Norbert.Irc;
 using Norbert.Modules.Common.Events;
 
-namespace Norbert.Cli.Tests
+namespace Norbert.Tests
 {
     [TestClass]
     [SuppressMessage("ReSharper", "UnusedVariable")]
