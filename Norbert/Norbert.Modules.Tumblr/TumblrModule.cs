@@ -7,7 +7,7 @@ using log4net;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
-using Norbert.Modules.Common.Extensions;
+using Norbert.Modules.Common.Helpers;
 
 namespace Norbert.Modules.Tumblr
 {

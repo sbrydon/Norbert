@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Norbert.Modules.Common.Extensions
+namespace Norbert.Modules.Common.Helpers
 {
     public static class DateTimeExtensions
     {
