@@ -48,6 +48,7 @@
     <Compile Include="Exceptions\HttpClientException.cs" />
     <Compile Include="Exceptions\LoadConfigException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DynamicHelper.cs" />
     <Compile Include="IConfigLoader.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IHttpClient.cs" />

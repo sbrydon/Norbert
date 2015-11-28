@@ -8,7 +8,7 @@ using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
 using Norbert.Modules.Common.Exceptions;
 using Norbert.Modules.Common.Extensions;
-//TODO: Direct link to images!
+
 namespace Norbert.Modules.Tumblr
 {
     public class TumblrModule : INorbertModule
@@ -94,7 +94,7 @@ namespace Norbert.Modules.Tumblr
                 var post = await GetRandomPost(tag);
                 var tumblrMsg = post == null
                     ? $"{msg.Nick}: Whoops, no tumblrs found"
-                    : $"{msg.Nick}: {post.short_url}";
+                    : $"{msg.Nick}: {post.image_permalink}";
 
                 _chatClient.SendMessage(tumblrMsg, msg.Source);
             }
@@ -112,8 +112,14 @@ namespace Norbert.Modules.Tumblr
             for (var i = 0; i < 3; i++)
             {
                 var before = MinBefore.AddDays(Random.Next(range));
-                var posts = await GetPosts(tag, before, 5);
+                var posts = await GetPosts(tag, before, 7);
                 allPosts.AddRange(posts);
+            }
+
+            if (!allPosts.Any())
+            {
+                Log.Debug("No posts found!");
+                return null;
             }
 
             var index = Random.Next(0, allPosts.Count);
@@ -131,7 +137,8 @@ namespace Norbert.Modules.Tumblr
             var posts = await _httpClient.GetAsync(uri);
 
             return ((IEnumerable<dynamic>) posts.response)
-                .Where(p => p.type == "photo")
+                .Where(p => p.type == "photo" &&
+                            DynamicHelper.HasProperty(() => p.image_permalink))
                 .ToList();
         }
     }
