@@ -29,8 +29,21 @@ namespace Norbert.Irc
                 MessageReceived(s, msgEventArgs);
             };
 
-            _client.RawMessageRecieved += (s, e) => Log.Debug($"<- {e.Message}");
-            _client.RawMessageSent += (s, e) => Log.Debug($"-> {e.Message}");
+            _client.RawMessageRecieved += delegate(object s, RawMessageEventArgs e)
+            {
+                if (e.Message.Contains("PONG"))
+                    return;
+
+                Log.Debug($"<- {e.Message}");
+            };
+
+            _client.RawMessageSent += delegate(object s, RawMessageEventArgs e)
+            {
+                if (e.Message.Contains("PING"))
+                    return;
+
+                Log.Debug($"-> {e.Message}");
+            };
         }
 
         public void ConnectAsync()
