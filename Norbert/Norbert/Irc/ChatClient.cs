@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using ChatSharp.Events;
 using log4net;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
@@ -31,8 +32,27 @@ namespace Norbert.Irc
                 }
             };
 
-            _adapter.MessageReceived += (s, e) => MessageReceived(s, e);
-            _adapter.MessageSent += (s, e) => MessageSent(s, e);
+            _adapter.RawMessageReceived += delegate (object s, RawMessageEventArgs e)
+            {
+                if (e.Message.Contains("PONG"))
+                    return;
+
+                Log.Debug($"<- {e.Message}");
+            };
+
+            _adapter.RawMessageSent += delegate (object s, RawMessageEventArgs e)
+            {
+                if (e.Message.Contains("PING"))
+                    return;
+
+                Log.Debug($"-> {e.Message}");
+            };
+
+            _adapter.PrivateMessageReceived += delegate (object s, PrivateMessageEventArgs e)
+            {
+                MessageReceived(s, new MessageEventArgs(!e.IsChannelMessage, e.Message.StartsWith(_adapter.Nick),
+                    e.Source, e.Nick, e.Message));
+            };
         }
 
         public void Connect()
@@ -59,6 +79,14 @@ namespace Norbert.Irc
         {
             Log.Debug($"Sending: '{message}' -> {string.Join(",", destinations)}");
             _adapter.SendMessage(message, destinations);
+
+            var nick = _adapter.Nick;
+            foreach (var dest in destinations)
+            {
+                var isPrivate = dest.Contains("#");
+                var eventArgs = new MessageEventArgs(isPrivate, false, dest, nick, message);
+                MessageSent(_adapter, eventArgs);
+            }
         }
     }
 }

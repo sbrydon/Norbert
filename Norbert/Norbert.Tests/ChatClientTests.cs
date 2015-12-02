@@ -79,15 +79,16 @@ namespace Norbert.Tests
         public void Message_Received_Message_Received_Raised()
         {
             var mock = new Mock<IIrcClientAdapter>();
-            var expEventArgs = new MessageEventArgs(false, false, "#chan1", "jim", "hi");
+            mock.SetupGet(m => m.Nick).Returns("jim");
 
             var client = new ChatClient(_config, mock.Object);
-            var raisedWithArgs = false;
-            client.MessageReceived += (s, e) => raisedWithArgs = e == expEventArgs;
-            
-            mock.Raise(m => m.MessageReceived += null, expEventArgs);
+            var raised = false;
+            client.MessageReceived += (s, e) => raised = true;
 
-            Assert.IsTrue(raisedWithArgs);
+            var eventArgs = new PrivateMessageEventArgs(true, null, null, "");
+            mock.Raise(m => m.PrivateMessageReceived += null, eventArgs);
+
+            Assert.IsTrue(raised);
         }
     }
 }

@@ -1,13 +1,15 @@
 using System;
-using Norbert.Modules.Common.Events;
+using ChatSharp.Events;
 
 namespace Norbert.Irc
 {
     public interface IIrcClientAdapter
     {
+        string Nick { get; }
         event EventHandler<EventArgs> ConnectionComplete;
-        event EventHandler<MessageEventArgs> MessageReceived;
-        event EventHandler<MessageEventArgs> MessageSent;
+        event EventHandler<RawMessageEventArgs> RawMessageReceived;
+        event EventHandler<RawMessageEventArgs> RawMessageSent;
+        event EventHandler<PrivateMessageEventArgs> PrivateMessageReceived;
         void ConnectAsync();
         void Quit(string reason);
         void JoinChannel(string channel);

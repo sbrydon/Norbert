@@ -66,6 +66,7 @@
     <Compile Include="Irc\ChatClient.cs" />
     <Compile Include="Irc\IIrcClientAdapter.cs" />
     <Compile Include="Irc\IrcClientAdapter.cs" />
+    <Compile Include="Irc\PrivateMessageEventArgs.cs" />
     <Compile Include="ModuleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
