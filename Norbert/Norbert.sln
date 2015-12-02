@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert", "Norbert\Norbert.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Tests", "Norbert.Tests\Norbert.Tests.csproj", "{04B34B81-B0EF-4032-8519-6B44847A7933}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Maps", "Norbert.Modules.Maps\Norbert.Modules.Maps.csproj", "{FB71B542-8752-48AC-B9E0-CE9E05D45D34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{04B34B81-B0EF-4032-8519-6B44847A7933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04B34B81-B0EF-4032-8519-6B44847A7933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04B34B81-B0EF-4032-8519-6B44847A7933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +54,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3972258B-DC82-4BD1-B035-00EBE8A78970} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
 		{F0AB7034-BB12-4F84-8200-85E9C094ACFC} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
+		{FB71B542-8752-48AC-B9E0-CE9E05D45D34} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
 	EndGlobalSection
 EndGlobal
