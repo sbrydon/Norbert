@@ -100,7 +100,7 @@ namespace Norbert.Modules.ChatLog.Tests
         {
             LoadModule();
 
-            var msg = new MessageEventArgs(false, false, "#chan1", "JIM", "HELLO");
+            var msg = new MessageEventArgs(false, "#chan1", "JIM", "HELLO");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
             const string file = "ChatLogs/#chan1.log";
@@ -117,7 +117,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, false, "", "", "");
+            var msg = new MessageEventArgs(false, "", "", "");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
             _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()),
@@ -129,7 +129,7 @@ namespace Norbert.Modules.ChatLog.Tests
         {
             LoadModule();
 
-            var msg = new MessageEventArgs(false, false, "#chan1", "NORBERT", "WELCOME");
+            var msg = new MessageEventArgs(false, "#chan1", "NORBERT", "WELCOME");
             _mockClient.Raise(m => m.MessageSent += null, msg);
 
             const string file = "ChatLogs/#chan1.log";
@@ -146,7 +146,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, false, "", "", "");
+            var msg = new MessageEventArgs(false, "", "", "");
             _mockClient.Raise(m => m.MessageSent += null, msg);
 
             _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()), 

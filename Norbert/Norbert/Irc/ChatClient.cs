@@ -14,7 +14,8 @@ namespace Norbert.Irc
         private readonly IIrcClientAdapter _adapter;
 
         public event EventHandler<MessageEventArgs> MessageReceived = delegate { };
-        public event EventHandler<MessageEventArgs> MessageSent = delegate { }; 
+        public event EventHandler<MessageEventArgs> MessageSent = delegate { };
+        public event EventHandler<CommandEventArgs> CommandReceived = delegate { }; 
 
         public ChatClient(Config config, IIrcClientAdapter adapter)
         {
@@ -50,8 +51,12 @@ namespace Norbert.Irc
 
             _adapter.PrivateMessageReceived += delegate (object s, PrivateMessageEventArgs e)
             {
-                MessageReceived(s, new MessageEventArgs(!e.IsChannelMessage, e.Message.StartsWith(_adapter.Nick),
-                    e.Source, e.Nick, e.Message));
+                var isCommand = !e.IsChannelMessage || e.Message.StartsWith(_adapter.Nick);
+
+                MessageReceived(s, new MessageEventArgs(isCommand, e.Source, e.Nick, e.Message));
+
+                if (isCommand)
+                    CommandReceived(s, new CommandEventArgs(e.Source, e.Nick, e.Message));
             };
         }
 
@@ -83,8 +88,7 @@ namespace Norbert.Irc
             var nick = _adapter.Nick;
             foreach (var dest in destinations)
             {
-                var isPrivate = dest.Contains("#");
-                var eventArgs = new MessageEventArgs(isPrivate, false, dest, nick, message);
+                var eventArgs = new MessageEventArgs(false, dest, nick, message);
                 MessageSent(_adapter, eventArgs);
             }
         }

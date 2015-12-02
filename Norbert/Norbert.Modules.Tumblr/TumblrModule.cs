@@ -33,7 +33,7 @@ namespace Norbert.Modules.Tumblr
             _chatClient = chatClient;
             _configLoader = configLoader;
 
-            _chatClient.MessageReceived += OnMessageReceived;
+            _chatClient.CommandReceived += OnCommandReceived;
             SetupApiKey();
         }
 
@@ -65,18 +65,12 @@ namespace Norbert.Modules.Tumblr
             }
         }
 
-        private async void OnMessageReceived(object sender, MessageEventArgs msg)
+        private async void OnCommandReceived(object sender, CommandEventArgs cmd)
         {
-            if (msg.IsPrivate || !msg.IsCommand)
-            {
-                Log.Debug($"Message ignored: IsPrivate={msg.IsPrivate}, IsCommand={msg.IsCommand}");
-                return;
-            }
-
-            var match = Regex.Match(msg.Message);
+            var match = Regex.Match(cmd.Message);
             if (!match.Success)
             {
-                Log.Debug($"Message ignored: '{msg.Message}' doesn't match '{Regex}'");
+                Log.Debug($"Message ignored: '{cmd.Message}' doesn't match '{Regex}'");
                 return;
             }
 
@@ -87,20 +81,20 @@ namespace Norbert.Modules.Tumblr
                 return;
             }
 
-            Log.Debug($"Replying: '{msg.Message}' matches '{Regex}', <tag> = '{tag}'");
+            Log.Debug($"Replying: '{cmd.Message}' matches '{Regex}', <tag> = '{tag}'");
 
             try
             {
                 var post = await GetRandomPost(tag);
                 var tumblrMsg = post == null
-                    ? $"{msg.Nick}: Whoops, no tumblrs found"
-                    : $"{msg.Nick}: {post.image_permalink}";
+                    ? $"{cmd.Nick}: Whoops, no tumblrs found"
+                    : $"{cmd.Nick}: {post.image_permalink}";
 
-                _chatClient.SendMessage(tumblrMsg, msg.Source);
+                _chatClient.SendMessage(tumblrMsg, cmd.Source);
             }
             catch (HttpClientException)
             {
-                _chatClient.SendMessage($"{msg.Nick}: Whoops, something went wrong", msg.Source);
+                _chatClient.SendMessage($"{cmd.Nick}: Whoops, something went wrong", cmd.Source);
             }
         }
 

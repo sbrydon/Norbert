@@ -67,46 +67,22 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Message_Received_Private_Ignored()
+        public void Command_Received_Non_Match_Or_Empty_Ignored()
         {
             LoadModule();
 
-            var msg = new MessageEventArgs(true, true, null, null, ValidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            var cmd = new CommandEventArgs(null, null, InvalidCmd1);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
-            _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()), 
-                Times.Never);
-        }
-
-        [TestMethod]
-        public void Message_Received_Non_Command_Ignored()
-        {
-            LoadModule();
-
-            var msg = new MessageEventArgs(false, false, null, null, ValidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
-
-            _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()), 
-                Times.Never);
-        }
-
-        [TestMethod]
-        public void Message_Received_Non_Match_Or_Empty_Ignored()
-        {
-            LoadModule();
-
-            var msg = new MessageEventArgs(false, true, null, null, InvalidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
-
-            msg = new MessageEventArgs(false, true, null, null, InvalidCmd2);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            cmd = new CommandEventArgs(null, null, InvalidCmd2);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()),
                 Times.Never);
         }
 
         [TestMethod]
-        public void Message_Received_Match_Replies()
+        public void Command_Received_Match_Replies()
         {
             _mockHttpClient
                 .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -114,17 +90,17 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
-            msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd2);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd1);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
+            cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd2);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(@"JIM:\s.+"), "#chan1"), 
                 Times.Exactly(2));
         }
 
         [TestMethod]
-        public void Message_Received_Match_Queries_Tumblr_Tagged()
+        public void Command_Received_Match_Queries_Tumblr_Tagged()
         {
             _mockHttpClient
                 .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -132,15 +108,15 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            var cmd = new CommandEventArgs(null, null, ValidCmd1);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             const string regex = @"http:\/\/api\.tumblr\.com\/v2\/tagged.*tag=burger.*";
             _mockHttpClient.Verify(m => m.GetAsync(It.IsRegex(regex)));
         }
 
         [TestMethod]
-        public void Message_Received_Match_Trims()
+        public void Command_Received_Match_Trims()
         {
             _mockHttpClient
                 .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -148,14 +124,14 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, true, null, null, ValidCmd1 + " ");
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            var cmd = new CommandEventArgs(null, null, ValidCmd1 + " ");
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             _mockHttpClient.Verify(m => m.GetAsync(It.IsRegex(".*tag=burger&.*")));
         }
 
         [TestMethod]
-        public void Message_Received_Match_Http_Exception_Caught()
+        public void Command_Received_Match_Http_Exception_Caught()
         {
             _mockHttpClient
                 .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -163,15 +139,15 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd1);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             const string regex = @"JIM:\sWhoops, something went wrong";
             _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"), Times.Once);
         }
 
         [TestMethod]
-        public void Message_Received_Match_No_Posts_Whoops()
+        public void Command_Received_Match_No_Posts_Whoops()
         {
             _mockHttpClient
                 .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -179,15 +155,15 @@ namespace Norbert.Modules.Tumblr.Tests
 
             LoadModule();
 
-            var msg = new MessageEventArgs(false, true, "#chan1", "JIM", ValidCmd1);
-            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd1);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             const string regex = @"JIM:\sWhoops, no tumblrs found";
             _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"), Times.Once);
         }
 
         [TestMethod]
-        public void Message_Received_Match_Replies_With_Photo()
+        public void Command_Received_Match_Replies_With_Photo()
         {
             _mockHttpClient
                     .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -197,8 +173,8 @@ namespace Norbert.Modules.Tumblr.Tests
 
             for (var i = 1; i <= 10; i++)
             {
-                var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
-                _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+                var cmd = new CommandEventArgs(null, null, ValidCmd1);
+                _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
                 _mockChatClient.Verify(m => m.SendMessage(It.IsRegex("photo_url"), It.IsAny<string[]>()),
                     Times.Exactly(i));
@@ -206,7 +182,7 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Message_Received_Match_Replies_Randomly()
+        public void Command_Received_Match_Replies_Randomly()
         {
             _mockHttpClient
                     .Setup(m => m.GetAsync(It.IsAny<string>()))
@@ -216,8 +192,8 @@ namespace Norbert.Modules.Tumblr.Tests
 
             for (var i = 1; i <= 10; i++)
             {
-                var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
-                _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+                var cmd = new CommandEventArgs(null, null, ValidCmd1);
+                _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
             }
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsRegex("photo_url_1"), It.IsAny<string[]>()),

@@ -7,6 +7,7 @@ namespace Norbert.Modules.Common
     {
         event EventHandler<MessageEventArgs> MessageReceived;
         event EventHandler<MessageEventArgs> MessageSent;
+        event EventHandler<CommandEventArgs> CommandReceived;
         void SendMessage(string message, params string[] destinations);
     }
 }

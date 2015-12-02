@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\CommandEventArgs.cs" />
     <Compile Include="Events\MessageEventArgs.cs" />
     <Compile Include="Exceptions\HttpClientException.cs" />
     <Compile Include="Exceptions\LoadConfigException.cs" />

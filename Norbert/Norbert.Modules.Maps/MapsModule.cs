@@ -28,7 +28,7 @@ namespace Norbert.Modules.Maps
             _chatClient = chatClient;
             _configLoader = configLoader;
 
-            _chatClient.MessageReceived += OnMessageReceived;
+            _chatClient.CommandReceived += OnCommandReceived;
             SetupApiKey();
         }
 
@@ -60,18 +60,12 @@ namespace Norbert.Modules.Maps
             }
         }
 
-        private async void OnMessageReceived(object sender, MessageEventArgs msg)
+        private async void OnCommandReceived(object sender, CommandEventArgs cmd)
         {
-            if (msg.IsPrivate || !msg.IsCommand)
-            {
-                Log.Debug($"Message ignored: IsPrivate={msg.IsPrivate}, IsCommand={msg.IsCommand}");
-                return;
-            }
-
-            var match = Regex.Match(msg.Message);
+            var match = Regex.Match(cmd.Message);
             if (!match.Success)
             {
-                Log.Debug($"Message ignored: '{msg.Message}' doesn't match '{Regex}'");
+                Log.Debug($"Message ignored: '{cmd.Message}' doesn't match '{Regex}'");
                 return;
             }
 
@@ -82,7 +76,7 @@ namespace Norbert.Modules.Maps
                 return;
             }
 
-            Log.Debug($"Replying: '{msg.Message}' matches '{Regex}', <name> = '{name}'");
+            Log.Debug($"Replying: '{cmd.Message}' matches '{Regex}', <name> = '{name}'");
 
             try
             {
@@ -90,11 +84,11 @@ namespace Norbert.Modules.Maps
                 var mapUrl = new MapUrl(loc.Lat, loc.Lon, name, _apiKey);
                 var shortUrl = await GetShortUrl(mapUrl.Formatted);
 
-                _chatClient.SendMessage($"{msg.Nick}: {name} is in {loc.Address} - {shortUrl}", msg.Source);
+                _chatClient.SendMessage($"{cmd.Nick}: {name} is in {loc.Address} - {shortUrl}", cmd.Source);
             }
             catch (HttpClientException)
             {
-                _chatClient.SendMessage($"{msg.Nick}: Whoops, something went wrong", msg.Source);
+                _chatClient.SendMessage($"{cmd.Nick}: Whoops, something went wrong", cmd.Source);
             }
         }
 
