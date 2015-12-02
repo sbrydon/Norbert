@@ -80,7 +80,7 @@ namespace Norbert.Modules.Tumblr
                 return;
             }
 
-            var tag = match.Groups["tag"].Value;
+            var tag = match.Groups["tag"].Value.TrimEnd();
             if (tag == string.Empty)
             {
                 Log.Debug($"Message ignored: matches '{Regex}' but <tag> is empty");
@@ -131,9 +131,9 @@ namespace Norbert.Modules.Tumblr
         private async Task<List<dynamic>> GetPosts(string tag, DateTime before, int limit)
         {
             var timestamp = before.ToTimestamp();
-            var q = $"?api_key={_apiKey}&tag={tag}&before={timestamp}&limit={limit}";
+            var q = $"api_key={_apiKey}&tag={tag}&before={timestamp}&limit={limit}";
 
-            string uri = $"http://api.tumblr.com/v2/tagged/{q}";
+            string uri = $"http://api.tumblr.com/v2/tagged?{q}";
             var posts = await _httpClient.GetAsync(uri);
 
             return ((IEnumerable<dynamic>) posts.response)

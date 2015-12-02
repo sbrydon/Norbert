@@ -35,10 +35,10 @@ namespace Norbert.Modules.Tumblr.Tests
 
             _response = new[]
             {
-                new {type = "photo", short_url = "photo_url_1"},
-                new {type = "photo", short_url = "photo_url_2"},
-                new {type = "quote", short_url = "quote_url"},
-                new {type = "video", short_url = "video_url"}
+                new {type = "photo", image_permalink = "photo_url_1"},
+                new {type = "photo", image_permalink = "photo_url_2"},
+                new {type = "quote", image_permalink = "quote_url"},
+                new {type = "video", image_permalink = "video_url"}
             };
         }
 
@@ -91,7 +91,7 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Message_Received_Non_Match_Ignored()
+        public void Message_Received_Non_Match_Or_Empty_Ignored()
         {
             LoadModule();
 
@@ -135,8 +135,23 @@ namespace Norbert.Modules.Tumblr.Tests
             var msg = new MessageEventArgs(false, true, null, null, ValidCmd1);
             _mockChatClient.Raise(m => m.MessageReceived += null, msg);
 
-            const string regex = @"http:\/\/api\.tumblr\.com\/v2\/tagged\/.*tag=burger.*";
+            const string regex = @"http:\/\/api\.tumblr\.com\/v2\/tagged.*tag=burger.*";
             _mockHttpClient.Verify(m => m.GetAsync(It.IsRegex(regex)));
+        }
+
+        [TestMethod]
+        public void Message_Received_Match_Trims()
+        {
+            _mockHttpClient
+                .Setup(m => m.GetAsync(It.IsAny<string>()))
+                .ReturnsAsync(new { response = _response });
+
+            LoadModule();
+
+            var msg = new MessageEventArgs(false, true, null, null, ValidCmd1 + " ");
+            _mockChatClient.Raise(m => m.MessageReceived += null, msg);
+
+            _mockHttpClient.Verify(m => m.GetAsync(It.IsRegex(".*tag=burger&.*")));
         }
 
         [TestMethod]
