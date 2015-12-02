@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
+using log4net;
 using Newtonsoft.Json;
 using Norbert.Modules.Common;
-using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert
 {
     public class ConfigLoader : IConfigLoader
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof (ConfigLoader));
         private readonly string _basePath;
 
         public ConfigLoader(string basePath)
@@ -26,7 +27,8 @@ namespace Norbert
             }
             catch (Exception e)
             {
-                throw new LoadConfigException(path, e.Message);
+                Log.Error($"Error loading '{path}': {e.Message}");
+                return default(T);
             }
         }
     }

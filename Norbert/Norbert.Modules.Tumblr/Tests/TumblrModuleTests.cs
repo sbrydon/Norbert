@@ -57,11 +57,11 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Loaded_Load_Exception_Caught()
+        public void Loaded_Config_Null_Uses_Default()
         {
             _mockLoader
                 .Setup(m => m.Load<Config>(It.IsAny<string>()))
-                .Throws(new LoadConfigException(null, null));
+                .Returns(default(Config));
 
             LoadModule();
         }

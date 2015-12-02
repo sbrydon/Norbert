@@ -2,7 +2,6 @@
 using log4net;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
-using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.ChatLog
 {
@@ -32,15 +31,7 @@ namespace Norbert.Modules.ChatLog
 
         private void SetupPath()
         {
-            var config = new Config();
-            try
-            {
-                config = _configLoader.Load<Config>("ChatLog/Config.json");
-            }
-            catch (LoadConfigException e)
-            {
-                Log.Error(e.Message);
-            }
+            var config = _configLoader.Load<Config>("ChatLog/Config.json") ?? new Config();
 
             if (string.IsNullOrWhiteSpace(config.Path))
             {

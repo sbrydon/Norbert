@@ -38,15 +38,7 @@ namespace Norbert.Modules.Maps
 
         private void SetupApiKey()
         {
-            var config = new Config();
-            try
-            {
-                config = _configLoader.Load<Config>("Maps/Config.json");
-            }
-            catch (LoadConfigException e)
-            {
-                Log.Error(e.Message);
-            }
+            var config = _configLoader.Load<Config>("Maps/Config.json") ?? new Config();
 
             if (string.IsNullOrWhiteSpace(config.ApiKey))
             {

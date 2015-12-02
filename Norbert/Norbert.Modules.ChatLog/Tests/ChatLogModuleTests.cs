@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Norbert.Modules.Common;
 using Norbert.Modules.Common.Events;
-using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.ChatLog.Tests
 {
@@ -44,11 +43,11 @@ namespace Norbert.Modules.ChatLog.Tests
         }
 
         [TestMethod]
-        public void Loaded_Load_Exception_Caught()
+        public void Loaded_Config_Null_Uses_Default()
         {
             _mockLoader
                 .Setup(m => m.Load<Config>(It.IsAny<string>()))
-                .Throws(new LoadConfigException(null, null));
+                .Returns(default(Config));
 
             LoadModule();
         }
