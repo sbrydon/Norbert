@@ -1,84 +1,61 @@
 ﻿using System;
 using log4net;
 using Norbert.Modules.Common;
-using Norbert.Modules.Common.Events;
 
 namespace Norbert.Modules.ChatLog
 {
     public class ChatLogModule : INorbertModule
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLogModule));
-        private IConfigLoader _configLoader;
-        private IFileSystem _fileSystem;
-        private IChatClient _chatClient;
-        private string _path;
+        // ReSharper disable once NotAccessedField.Local
+        private FileChatLogger _fileChatLogger;
 
         public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
             IChatClient chatClient, IHttpClient httpClient)
         {
-            _configLoader = configLoader;
-            _fileSystem = fileSystem;
-            _chatClient = chatClient;
-
-            _chatClient.MessageReceived += (s, e) => AppendToLog(e);
-            _chatClient.MessageSent += (s, e) => AppendToLog(e);
-            SetupPath();
+            var config = LoadConfig(configLoader, fileSystem);
+            _fileChatLogger = new FileChatLogger(fileSystem, chatClient, config);
         }
 
         public void Unloaded()
         {
         }
 
-        private void SetupPath()
+        private static Config LoadConfig(IConfigLoader configLoader, IFileSystem fileSystem)
         {
-            var config = _configLoader.Load<Config>("ChatLog/Config.json") ?? new Config();
+            var config = configLoader.Load<Config>("ChatLog/Config.json") ?? new Config();
 
             if (string.IsNullOrWhiteSpace(config.Path))
             {
-                _path = "ChatLogs";
+                config.Path = "ChatLogs";
                 Log.Info("No path specified, using 'ChatLogs'");
             }
             else
             {
-                _path = config.Path;
+                config.Path = config.Path;
             }
 
             try
             {
-                if (_fileSystem.DirectoryExists(_path))
+                if (fileSystem.DirectoryExists(config.Path))
                 {
                     Log.Info("Path exists, skipping creation");
                 }
                 else
                 {
                     Log.Info("Path does not exist, creating it..");
-                    _fileSystem.CreateDirectory(_path);
+                    fileSystem.CreateDirectory(config.Path);
                 }
 
-                Log.Info($"Path is '{_path}'");
+                Log.Info($"Path is '{config.Path}'");
             }
             catch (Exception e)
             {
-                Log.Error($"Error creating '{_path}': {e.Message}");
+                Log.Error($"Error creating '{config.Path}': {e.Message}");
                 Log.Error("Path not set");
             }
-        }
 
-        private void AppendToLog(MessageEventArgs msg)
-        {
-            var file = $"{msg.Source}.log";
-
-            try
-            {
-                var entry = $"[{DateTime.Now}] <{msg.Nick}> {msg.Message}";
-                Log.Debug($"{file}: {entry}");
-
-                _fileSystem.AppendText($"{_path}/{file}", entry);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Error writing to {msg.Source}.log: {e.Message}");
-            }
+            return config;
         }
     }
 }
