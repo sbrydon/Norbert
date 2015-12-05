@@ -50,8 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="IRandomiser.cs" />
+    <Compile Include="ITumblrClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Randomiser.cs" />
     <Compile Include="Tests\TumblrModuleTests.cs" />
+    <Compile Include="Tests\TumblrPhotosTests.cs" />
+    <Compile Include="TumblrClient.cs" />
+    <Compile Include="TumblrPhotos.cs" />
     <Compile Include="TumblrModule.cs" />
   </ItemGroup>
   <ItemGroup>
