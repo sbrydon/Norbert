@@ -13,10 +13,7 @@ namespace Norbert.Modules.Tumblr.Tests
     [SuppressMessage("ReSharper", "UnusedVariable")]
     public class TumblrPhotosTests
     {
-        private const string ValidCmd1 = "tumblr of burger";
-        private const string ValidCmd2 = "tumblr burger";
-        private const string InvalidCmd1 = "baguette";
-        private const string InvalidCmd2 = "tumblr of";
+        private const string ValidCmd = "tumblr of burger";
 
         private Mock<IChatClient> _mockChatClient;
         private Mock<ITumblrClient> _mockTumblrClient;
@@ -33,20 +30,21 @@ namespace Norbert.Modules.Tumblr.Tests
             _photoPosts = new List<dynamic>
             {
                 new {type = "photo", image_permalink = "photo_url_1"},
-                new {type = "photo", image_permalink = "photo_url_2"}
+                new {type = "photo", image_permalink = "photo_url_2"},
+                new {type = "photo", image_permalink = "photo_url_3"}
             };
         }
 
         [TestMethod]
         public void Command_Received_Non_Match_Or_Empty_Ignored()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
-            var cmd = new CommandEventArgs(null, null, InvalidCmd1);
+            var cmd = new CommandEventArgs(null, null, "baguette");
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
-            cmd = new CommandEventArgs(null, null, InvalidCmd2);
+            cmd = new CommandEventArgs(null, null, "tumblr of");
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()),
@@ -56,15 +54,17 @@ namespace Norbert.Modules.Tumblr.Tests
         [TestMethod]
         public void Command_Received_Match_Replies()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
             _mockTumblrClient
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd1);
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
+
+            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
-            cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd2);
+
+            cmd = new CommandEventArgs("#chan1", "JIM", "tumblr burger");
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(@"JIM:\s.+"), "#chan1"),
@@ -72,74 +72,58 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Command_Received_Match_Gets_Photos_Before_Random_Date()
+        public void Command_Received_Match_Gets_21_Photos_With_Tag()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
             _mockTumblrClient
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var expMin = new DateTime(2010, 1, 1);
-            const string expTag = "burger";
-            const int expLimit = 7;
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
 
-            var expBefores = new[]
-            {
-                DateTime.Today,
-                DateTime.Today.AddDays(-3),
-                DateTime.Today.AddDays(-5)
-            };
-            _mockRandomiser.SetupSequence(m => m.NextDateTime(expMin))
-                .Returns(expBefores[0])
-                .Returns(expBefores[1])
-                .Returns(expBefores[2]);
-
-            var cmd = new CommandEventArgs(null, null, ValidCmd1);
+            var cmd = new CommandEventArgs(null, null, ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
-            foreach (var expBefore in expBefores)
-            {
-                _mockTumblrClient.Verify(
-                    m => m.GetPhotoPostsAsync(expTag, expBefore, expLimit), Times.Once);
-            }
+            const string expTag = "burger";
+            const int expLimit = 7;
+            _mockTumblrClient.Verify(
+                m => m.GetPhotoPostsAsync(expTag, It.IsAny<DateTime>(), expLimit), Times.Exactly(3));
         }
 
         [TestMethod]
-        public void Command_Received_Match_Chooses_Random_Post()
+        public void Command_Received_Replies_With_Random_Photo_Before_Random_Date_After_2010()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
-            _mockTumblrClient
-                .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
+            var expMin = new DateTime(2010, 1, 1);
+            var expBefore = DateTime.Today.AddDays(-3);
+            const int randomIndex = 1;
+
+            _mockRandomiser.Setup(m => m.NextDateTime(expMin)).Returns(expBefore);
+            _mockRandomiser.Setup(m => m.NextInt(It.IsAny<int>())).Returns(randomIndex);
+
+            _mockTumblrClient.Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), expBefore, It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var expPostIndices = new[] {1, 0};
-            _mockRandomiser.SetupSequence(m => m.NextInt(It.IsAny<int>()))
-                .Returns(expPostIndices[0])
-                .Returns(expPostIndices[1]);
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
 
-            foreach(var i in expPostIndices)
-            {
-                var cmd = new CommandEventArgs(null, null, ValidCmd1);
-                _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
+            var cmd = new CommandEventArgs(null, null, ValidCmd);
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
-                string regex = _photoPosts[i].image_permalink;
-                _mockChatClient.Verify(
-                    m => m.SendMessage(It.IsRegex(regex), It.IsAny<string[]>()), Times.Once);
-            }
+            string regex = _photoPosts[randomIndex].image_permalink;
+            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), It.IsAny<string[]>()));
         }
 
         [TestMethod]
         public void Command_Received_Match_Trims_Tag()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
             _mockTumblrClient
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var cmd = new CommandEventArgs(null, null, ValidCmd1 + " ");
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
+
+            var cmd = new CommandEventArgs(null, null, ValidCmd + " ");
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             _mockTumblrClient.Verify(
@@ -149,33 +133,35 @@ namespace Norbert.Modules.Tumblr.Tests
         [TestMethod]
         public void Command_Received_Match_Http_Exception_Caught()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
             _mockTumblrClient
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Throws(new HttpClientException(null, null));
 
-            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd1);
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
+
+            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             const string regex = @"JIM:\sWhoops, something went wrong";
-            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"), Times.Once);
+            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"));
         }
 
         [TestMethod]
         public void Command_Received_Match_No_Posts_Whoops()
         {
-            var photos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
             _mockTumblrClient
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(new List<dynamic>());
 
-            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd1);
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
+
+            var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
             const string regex = @"JIM:\sWhoops, no tumblrs found";
-            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"), Times.Once);
+            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"));
         }
     }
 }

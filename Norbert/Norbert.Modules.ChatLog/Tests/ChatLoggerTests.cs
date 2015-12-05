@@ -27,56 +27,52 @@ namespace Norbert.Modules.ChatLog.Tests
         public void Message_Received_Appends_To_Log_File()
         {
             var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
-
             var msg = new MessageEventArgs(false, "#chan1", "JIM", "HELLO");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
             const string file = "ChatLogs/#chan1.log";
             const string regex = @"^\[.+\]\s<JIM>\sHELLO$";
-            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)), Times.Once);
+            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)));
         }
 
         [TestMethod]
         public void Message_Received_Exception_Caught()
         {
-            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
             _mockFileSystem
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
 
+            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
             var msg = new MessageEventArgs(false, "", "", "");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
-            _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()),
-                Times.Once);
+            _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [TestMethod]
         public void Message_Sent_Appends_To_Log_File()
         {
             var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
-
             var msg = new MessageEventArgs(false, "#chan1", "NORBERT", "WELCOME");
             _mockClient.Raise(m => m.MessageSent += null, msg);
 
             const string file = "ChatLogs/#chan1.log";
             const string regex = @"^\[.+\]\s<NORBERT>\sWELCOME$";
-            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)), Times.Once);
+            _mockFileSystem.Verify(m => m.AppendText(file, It.IsRegex(regex)));
         }
 
         [TestMethod]
         public void Message_Sent_Exception_Caught()
         {
-            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
             _mockFileSystem
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
 
+            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
             var msg = new MessageEventArgs(false, "", "", "");
             _mockClient.Raise(m => m.MessageSent += null, msg);
 
-            _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()),
-                Times.Once);
+            _mockFileSystem.Verify(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()));
         }
     }
 }
