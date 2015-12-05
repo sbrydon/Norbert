@@ -5,13 +5,13 @@ using Norbert.Modules.Common.Events;
 
 namespace Norbert.Modules.ChatLog
 {
-    public class FileChatLogger
+    public class ChatLogger
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FileChatLogger));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLogger));
         private readonly IFileSystem _fileSystem;
         private readonly string _path;
 
-        public FileChatLogger(IFileSystem fileSystem, IChatClient chatClient, Config config)
+        public ChatLogger(IFileSystem fileSystem, IChatClient chatClient, Config config)
         {
             _fileSystem = fileSystem;
             _path = config.Path;

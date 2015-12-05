@@ -9,7 +9,7 @@ namespace Norbert.Modules.ChatLog.Tests
 {
     [TestClass]
     [SuppressMessage("ReSharper", "UnusedVariable")]
-    public class FileChatLoggerTests
+    public class ChatLoggerTests
     {
         private Mock<IFileSystem> _mockFileSystem;
         private Mock<IChatClient> _mockClient;
@@ -26,7 +26,7 @@ namespace Norbert.Modules.ChatLog.Tests
         [TestMethod]
         public void Message_Received_Appends_To_Log_File()
         {
-            var logger = new FileChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
 
             var msg = new MessageEventArgs(false, "#chan1", "JIM", "HELLO");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
@@ -39,7 +39,7 @@ namespace Norbert.Modules.ChatLog.Tests
         [TestMethod]
         public void Message_Received_Exception_Caught()
         {
-            var logger = new FileChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
             _mockFileSystem
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
@@ -54,7 +54,7 @@ namespace Norbert.Modules.ChatLog.Tests
         [TestMethod]
         public void Message_Sent_Appends_To_Log_File()
         {
-            var logger = new FileChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
 
             var msg = new MessageEventArgs(false, "#chan1", "NORBERT", "WELCOME");
             _mockClient.Raise(m => m.MessageSent += null, msg);
@@ -67,7 +67,7 @@ namespace Norbert.Modules.ChatLog.Tests
         [TestMethod]
         public void Message_Sent_Exception_Caught()
         {
-            var logger = new FileChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
             _mockFileSystem
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
