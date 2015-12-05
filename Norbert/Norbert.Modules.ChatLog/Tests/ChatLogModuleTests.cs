@@ -11,7 +11,7 @@ namespace Norbert.Modules.ChatLog.Tests
         private ChatLogModule _module;
         private Mock<IConfigLoader> _mockLoader;
         private Mock<IFileSystem> _mockFileSystem;
-        private Mock<IChatClient> _mockClient;
+        private Mock<IChatClient> _mockChatClient;
 
         [TestInitialize]
         public void Initialise()
@@ -19,12 +19,8 @@ namespace Norbert.Modules.ChatLog.Tests
             _module = new ChatLogModule();
 
             _mockLoader = new Mock<IConfigLoader>();
-            _mockLoader
-                .Setup(m => m.Load<Config>(It.IsAny<string>()))
-                .Returns(new Config());
-
             _mockFileSystem = new Mock<IFileSystem>();
-            _mockClient = new Mock<IChatClient>();
+            _mockChatClient = new Mock<IChatClient>();
         }
 
         [TestMethod]
@@ -95,7 +91,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
         private void LoadModule()
         {
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockClient.Object, null);
+            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockChatClient.Object, null);
         }
     }
 }
