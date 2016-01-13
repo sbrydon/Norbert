@@ -50,8 +50,6 @@
     <Compile Include="Exceptions\LoadConfigException.cs" />
     <Compile Include="Helpers\DateTimeExtensions.cs" />
     <Compile Include="Helpers\DynamicHelper.cs" />
-    <Compile Include="Helpers\RandomExtensions.cs" />
-    <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="IConfigLoader.cs" />
     <Compile Include="IFileSystem.cs" />
     <Compile Include="IHttpClient.cs" />
