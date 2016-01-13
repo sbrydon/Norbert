@@ -36,22 +36,6 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Command_Received_Non_Match_Or_Empty_Ignored()
-        {
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
-                _mockRandomiser.Object);
-
-            var cmd = new CommandEventArgs(null, null, "baguette");
-            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
-
-            cmd = new CommandEventArgs(null, null, "tumblr of");
-            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
-
-            _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()),
-                Times.Never);
-        }
-
-        [TestMethod]
         public void Command_Received_Match_Replies()
         {
             _mockTumblrClient
@@ -72,6 +56,22 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
+        public void Command_Received_Non_Match_Or_Empty_Ignored()
+        {
+            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+                _mockRandomiser.Object);
+
+            var cmd = new CommandEventArgs(null, null, "baguette");
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
+
+            cmd = new CommandEventArgs(null, null, "tumblr of");
+            _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
+
+            _mockChatClient.Verify(m => m.SendMessage(It.IsAny<string>(), It.IsAny<string[]>()),
+                Times.Never);
+        }
+
+        [TestMethod]
         public void Command_Received_Match_Gets_21_Photos_With_Tag()
         {
             _mockTumblrClient
@@ -86,6 +86,7 @@ namespace Norbert.Modules.Tumblr.Tests
 
             const string expTag = "burger";
             const int expLimit = 7;
+
             _mockTumblrClient.Verify(
                 m => m.GetPhotoPostsAsync(expTag, It.IsAny<DateTime>(), expLimit), Times.Exactly(3));
         }
@@ -143,8 +144,8 @@ namespace Norbert.Modules.Tumblr.Tests
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
-            const string regex = @"JIM:\sWhoops, something went wrong";
-            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"));
+            _mockChatClient.Verify(m => m.SendMessage("JIM: Whoops, something went wrong",
+                "#chan1"));
         }
 
         [TestMethod]
@@ -160,8 +161,8 @@ namespace Norbert.Modules.Tumblr.Tests
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
 
-            const string regex = @"JIM:\sWhoops, no tumblrs found";
-            _mockChatClient.Verify(m => m.SendMessage(It.IsRegex(regex), "#chan1"));
+            _mockChatClient.Verify(m => m.SendMessage("JIM: Whoops, no tumblrs found", 
+                "#chan1"));
         }
     }
 }
