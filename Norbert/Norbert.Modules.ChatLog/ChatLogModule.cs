@@ -10,8 +10,8 @@ namespace Norbert.Modules.ChatLog
         // ReSharper disable once NotAccessedField.Local
         private ChatLogger _chatLogger;
 
-        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
-            IChatClient chatClient, IHttpClient httpClient)
+        public void Loaded(IConfigLoader configLoader, IChatClient chatClient, 
+            IHttpClient httpClient, IFileSystem fileSystem, IRandomiser randomiser)
         {
             var config = LoadConfig(configLoader, fileSystem);
             _chatLogger = new ChatLogger(fileSystem, chatClient, config);

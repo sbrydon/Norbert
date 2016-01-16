@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Norbert.Modules.Tumblr
+namespace Norbert.Modules.Common
 {
     public interface IRandomiser
     {

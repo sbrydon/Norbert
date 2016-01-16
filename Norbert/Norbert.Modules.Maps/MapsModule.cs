@@ -9,8 +9,8 @@ namespace Norbert.Modules.Maps
         // ReSharper disable once NotAccessedField.Local
         private StaticMaps _staticMaps;
 
-        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem,
-            IChatClient chatClient, IHttpClient httpClient)
+        public void Loaded(IConfigLoader configLoader, IChatClient chatClient, 
+            IHttpClient httpClient, IFileSystem fileSystem, IRandomiser randomiser)
         {
             var config = LoadConfig(configLoader);
             var mapsClient = new MapsClient(httpClient, config.ApiKey);

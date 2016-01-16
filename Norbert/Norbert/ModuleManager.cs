@@ -12,19 +12,22 @@ namespace Norbert
     public class ModuleManager
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ModuleManager));
+
         private readonly IConfigLoader _configLoader;
-        private readonly IFileSystem _fileSystem;
-        private readonly IChatClient _client;
+        private readonly IChatClient _chatClient;
         private readonly IHttpClient _httpClient;
+        private readonly IFileSystem _fileSystem;
+        private readonly IRandomiser _randomiser;
         private readonly List<INorbertModule> _modules = new List<INorbertModule>();
 
         public ModuleManager(IConfigLoader configLoader, IFileSystem fileSystem, 
-            IChatClient client, IHttpClient httpClient)
+            IChatClient chatClient, IHttpClient httpClient, IRandomiser randomiser)
         {
             _configLoader = configLoader;
             _fileSystem = fileSystem;
-            _client = client;
+            _chatClient = chatClient;
             _httpClient = httpClient;
+            _randomiser = randomiser;
         }
 
         public void LoadModules()
@@ -51,7 +54,7 @@ namespace Norbert
                     _modules.Add(module);
 
                     Log.Info($"Loading {module.GetType().Name}..");
-                    module.Loaded(_configLoader, _fileSystem, _client, _httpClient);
+                    module.Loaded(_configLoader, _chatClient, _httpClient, _fileSystem, _randomiser);
                     Log.Info($"{module.GetType().Name} loaded");
                 }
                 catch (Exception e)

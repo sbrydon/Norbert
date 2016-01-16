@@ -1,6 +1,7 @@
 ﻿using System;
+using Norbert.Modules.Common;
 
-namespace Norbert.Modules.Tumblr
+namespace Norbert
 {
     public class Randomiser : IRandomiser
     {

@@ -2,8 +2,8 @@
 {
     public interface INorbertModule
     {
-        void Loaded(IConfigLoader configLoader, IFileSystem fileSystem, 
-            IChatClient chatClient, IHttpClient httpClient);
+        void Loaded(IConfigLoader configLoader, IChatClient chatClient, 
+            IHttpClient httpClient, IFileSystem fileSystem, IRandomiser randomiser);
         void Unloaded();
     }
 }

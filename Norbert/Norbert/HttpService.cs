@@ -11,9 +11,9 @@ namespace Norbert
 {
     public class HttpService : IHttpClient
     {
-        private const string MediaTypeJson = "application/json";
-
         private static readonly ILog Log = LogManager.GetLogger(typeof(HttpService));
+        private const string MediaTypeJson = "application/json";
+        
         private readonly HttpClient _client = new HttpClient();
 
         public async Task<dynamic> GetAsync(string uri)

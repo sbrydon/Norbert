@@ -9,6 +9,7 @@ namespace Norbert
     class App
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(App));
+
         private static Config _config;
         private static ModuleManager _moduleManager;
 
@@ -32,7 +33,7 @@ namespace Norbert
             var adapter = new IrcClientAdapter(_config.Server, _config.Nick, _config.User);
             var client = new ChatClient(_config, adapter);
             _moduleManager = new ModuleManager(new ConfigLoader("Modules"), new FileSystem(),
-                client, new HttpService());
+                client, new HttpService(), new Randomiser());
 
             try
             {

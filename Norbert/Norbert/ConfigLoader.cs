@@ -9,6 +9,7 @@ namespace Norbert
     public class ConfigLoader : IConfigLoader
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (ConfigLoader));
+
         private readonly string _basePath;
 
         public ConfigLoader(string basePath)

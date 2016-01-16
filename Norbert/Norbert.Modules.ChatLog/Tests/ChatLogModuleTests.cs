@@ -91,7 +91,7 @@ namespace Norbert.Modules.ChatLog.Tests
 
         private void LoadModule()
         {
-            _module.Loaded(_mockLoader.Object, _mockFileSystem.Object, _mockChatClient.Object, null);
+            _module.Loaded(_mockLoader.Object, _mockChatClient.Object, null, _mockFileSystem.Object, null);
         }
     }
 }

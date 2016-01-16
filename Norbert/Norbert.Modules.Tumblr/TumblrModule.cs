@@ -9,12 +9,12 @@ namespace Norbert.Modules.Tumblr
         // ReSharper disable once NotAccessedField.Local
         private TumblrPhotos _tumblrPhotos;
 
-        public void Loaded(IConfigLoader configLoader, IFileSystem fileSystem,
-            IChatClient chatClient, IHttpClient httpClient)
+        public void Loaded(IConfigLoader configLoader, IChatClient chatClient, 
+            IHttpClient httpClient, IFileSystem fileSystem, IRandomiser randomiser)
         {
             var config = LoadConfig(configLoader);
             var tumblrClient = new TumblrClient(httpClient, config.ApiKey);
-            _tumblrPhotos = new TumblrPhotos(chatClient, tumblrClient, new Randomiser());
+            _tumblrPhotos = new TumblrPhotos(chatClient, tumblrClient, randomiser);
         }
 
         public void Unloaded()

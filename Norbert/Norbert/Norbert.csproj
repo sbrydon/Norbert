@@ -69,6 +69,7 @@
     <Compile Include="Irc\PrivateMessageEventArgs.cs" />
     <Compile Include="ModuleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Randomiser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

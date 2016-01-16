@@ -55,6 +55,7 @@
     <Compile Include="IHttpClient.cs" />
     <Compile Include="IChatClient.cs" />
     <Compile Include="INorbertModule.cs" />
+    <Compile Include="IRandomiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

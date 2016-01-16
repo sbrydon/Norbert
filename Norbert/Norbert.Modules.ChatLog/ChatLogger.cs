@@ -8,6 +8,7 @@ namespace Norbert.Modules.ChatLog
     public class ChatLogger
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ChatLogger));
+
         private readonly IFileSystem _fileSystem;
         private readonly string _path;
 
