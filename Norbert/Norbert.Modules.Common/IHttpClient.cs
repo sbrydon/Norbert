@@ -5,6 +5,6 @@ namespace Norbert.Modules.Common
     public interface IHttpClient
     {
         Task<dynamic> GetAsync(string url);
-        Task<dynamic> PostAsync(string url, dynamic body);
+        Task<dynamic> GetShortUrlAsync(string apiKey, string longUrl);
     }
 }

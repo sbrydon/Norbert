@@ -17,16 +17,7 @@ namespace Norbert.Modules.Maps
         public async Task<string> GetStaticUrlAsync(string place)
         {
             var mapUrl = new StaticMapUrl(place, _apiKey);
-            return await GetShortUrlAsync(mapUrl.Formatted);
-        }
-
-        private async Task<dynamic> GetShortUrlAsync(string longUrl)
-        {
-            var url = $"https://www.googleapis.com/urlshortener/v1/url?key={_apiKey}";
-            var body = new { longUrl };
-            var response = await _httpClient.PostAsync(url, body);
-
-            return response.id;
+            return await _httpClient.GetShortUrlAsync(_apiKey, mapUrl.Formatted);
         }
     }
 }

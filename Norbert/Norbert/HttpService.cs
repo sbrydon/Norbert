@@ -34,7 +34,16 @@ namespace Norbert
             }
         }
 
-        public async Task<dynamic> PostAsync(string uri, dynamic body)
+        public async Task<dynamic> GetShortUrlAsync(string apiKey, string longUrl)
+        {
+            var url = $"https://www.googleapis.com/urlshortener/v1/url?key={apiKey}";
+            var body = new { longUrl };
+            var response = await PostAsync(url, body);
+
+            return response.id;
+        }
+
+        private async Task<dynamic> PostAsync(string uri, dynamic body)
         {
             Log.Debug($"POST: {uri}, body='{body}'");
 
@@ -52,6 +61,6 @@ namespace Norbert
                 Log.Error($"POST error: {e.Message}");
                 throw new HttpClientException(uri, e.Message);
             }
-        } 
+        }
     }
 }
