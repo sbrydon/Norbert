@@ -7,8 +7,8 @@ namespace Norbert.Irc
     {
         string Nick { get; }
         event EventHandler<EventArgs> ConnectionComplete;
-        event EventHandler<RawMessageEventArgs> RawMessageReceived;
         event EventHandler<RawMessageEventArgs> RawMessageSent;
+        event EventHandler<RawMessageEventArgs> RawMessageReceived;
         event EventHandler<PrivateMessageEventArgs> PrivateMessageReceived;
         void ConnectAsync();
         void Quit(string reason);

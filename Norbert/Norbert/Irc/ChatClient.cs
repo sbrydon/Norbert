@@ -35,7 +35,7 @@ namespace Norbert.Irc
 
             _adapter.RawMessageReceived += delegate (object s, RawMessageEventArgs e)
             {
-                if (e.Message.Contains("PING"))
+                if (e.Message.Contains("PING") || e.Message.Contains("PONG"))
                     return;
 
                 Log.Debug($"<- {e.Message}");
@@ -43,7 +43,7 @@ namespace Norbert.Irc
 
             _adapter.RawMessageSent += delegate (object s, RawMessageEventArgs e)
             {
-                if (e.Message.Contains("PONG"))
+                if (e.Message.Contains("PING") || e.Message.Contains("PONG"))
                     return;
 
                 Log.Debug($"-> {e.Message}");

@@ -11,8 +11,8 @@ namespace Norbert.Irc
         public string Nick => _client.User.Nick;
 
         public event EventHandler<EventArgs> ConnectionComplete = delegate { };
+        public event EventHandler<RawMessageEventArgs> RawMessageSent = delegate { };
         public event EventHandler<RawMessageEventArgs> RawMessageReceived = delegate { };
-        public event EventHandler<RawMessageEventArgs> RawMessageSent = delegate { }; 
         public event EventHandler<PrivateMessageEventArgs> PrivateMessageReceived = delegate { };
 
         public IrcClientAdapter(string serverAddress, string nick, string user)
