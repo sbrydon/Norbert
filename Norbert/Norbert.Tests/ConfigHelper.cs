@@ -10,7 +10,8 @@ namespace Norbert.Tests
             {"nick", "norbert"},
             {"user", "norbert"},
             {"channels", "#chan1 #chan2"},
-            {"quitMsg", "Bye!"}
+            {"quitMsg", "Bye!"},
+            {"googleApiKey", "your_google_api_key"}
         };
     }
 }

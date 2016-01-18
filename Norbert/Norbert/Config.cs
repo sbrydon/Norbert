@@ -10,6 +10,7 @@ namespace Norbert
         public string User { get; }
         public string[] Channels { get; }
         public string QuitMsg { get; }
+        public string GoogleApiKey { get; }
 
         public Config(NameValueCollection appSettings)
         {
@@ -33,6 +34,10 @@ namespace Norbert
             QuitMsg = appSettings.Get("quitMsg");
             if (string.IsNullOrWhiteSpace(QuitMsg))
                 throw new ConfigException("quitMsg invalid");
+
+            GoogleApiKey = appSettings.Get("googleApiKey");
+            if (string.IsNullOrWhiteSpace(GoogleApiKey))
+                throw new ConfigException("googleApiKey invalid");
         }
     }
 }

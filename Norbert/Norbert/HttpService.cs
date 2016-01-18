@@ -15,6 +15,12 @@ namespace Norbert
         private const string MediaTypeJson = "application/json";
         
         private readonly HttpClient _client = new HttpClient();
+        private readonly string _googleApiKey;
+
+        public HttpService(string googleApiKey)
+        {
+            _googleApiKey = googleApiKey;
+        }
 
         public async Task<dynamic> GetAsync(string uri)
         {
@@ -34,9 +40,10 @@ namespace Norbert
             }
         }
 
-        public async Task<dynamic> GetShortUrlAsync(string apiKey, string longUrl)
+        public async Task<dynamic> GetShortUrlAsync(string longUrl)
         {
-            var url = $"https://www.googleapis.com/urlshortener/v1/url?key={apiKey}";
+            var url = $"https://www.googleapis.com/urlshortener/v1/url?key={_googleApiKey}";
+
             var body = new { longUrl };
             var response = await PostAsync(url, body);
 

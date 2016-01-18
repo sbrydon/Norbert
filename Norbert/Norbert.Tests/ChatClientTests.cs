@@ -4,7 +4,6 @@ using System.Net.Sockets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Norbert.Irc;
-using Norbert.Modules.Common.Events;
 
 namespace Norbert.Tests
 {

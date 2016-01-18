@@ -26,6 +26,7 @@ namespace Norbert.Tests
             Assert.AreEqual(config.User, _appSettings.Get("user"));
             CollectionAssert.AreEqual(config.Channels, _appSettings.Get("channels").Split());
             Assert.AreEqual(config.QuitMsg, _appSettings.Get("quitMsg"));
+            Assert.AreEqual(config.GoogleApiKey, _appSettings.Get("googleApiKey"));
         }
 
         [TestMethod]
@@ -61,6 +62,13 @@ namespace Norbert.Tests
         public void Ctor_Invalid_QuitMsg_Throws()
         {
             InstantiateWithNullOrWhitespace("quitMsg");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ConfigException))]
+        public void Ctor_Invalid_GoogleApiKey_Throws()
+        {
+            InstantiateWithNullOrWhitespace("googleApiKey");
         }
 
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
