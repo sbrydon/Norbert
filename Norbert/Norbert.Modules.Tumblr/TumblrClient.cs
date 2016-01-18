@@ -10,6 +10,7 @@ namespace Norbert.Modules.Tumblr
     public class TumblrClient : ITumblrClient
     {
         private const string BaseUrl = "http://api.tumblr.com/v2";
+
         private readonly IHttpClient _httpClient;
         private readonly string _apiKey;
 
@@ -22,7 +23,7 @@ namespace Norbert.Modules.Tumblr
         public async Task<List<dynamic>> GetPhotoPostsAsync(string tag, DateTime before, int limit)
         {
             var timestamp = before.ToTimestamp();
-            var q = $"api_key={_apiKey}&tag={tag}&before={timestamp}&limit={limit}";
+            var q = $"tag={tag}&before={timestamp}&limit={limit}&api_key={_apiKey}";
 
             string url = $"{BaseUrl}/tagged?{q}";
             var posts = await _httpClient.GetAsync(url);
