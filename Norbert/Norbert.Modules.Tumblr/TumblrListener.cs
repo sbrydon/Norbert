@@ -10,9 +10,9 @@ using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.Tumblr
 {
-    public class TumblrPhotos
+    public class TumblrListener
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TumblrPhotos));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(TumblrListener));
 
         private static readonly Regex Regex =
             new Regex(@"tumblr\s*(?:of\s*)?(?<tag>.*)", RegexOptions.IgnoreCase);
@@ -23,7 +23,7 @@ namespace Norbert.Modules.Tumblr
         private readonly ITumblrClient _tumblrClient;
         private readonly IRandomiser _randomiser;
 
-        public TumblrPhotos(IChatClient chatClient, ITumblrClient tumblrClient, IRandomiser randomiser)
+        public TumblrListener(IChatClient chatClient, ITumblrClient tumblrClient, IRandomiser randomiser)
         {
             _chatClient = chatClient;
             _tumblrClient = tumblrClient;
@@ -53,11 +53,11 @@ namespace Norbert.Modules.Tumblr
             try
             {
                 var post = await GetRandomPost(tag);
-                var tumblrMsg = post == null
+                var message = post == null
                     ? $"{cmd.Nick}: Whoops, no tumblrs found"
                     : $"{cmd.Nick}: {post.image_permalink}";
 
-                _chatClient.SendMessage(tumblrMsg, cmd.Source);
+                _chatClient.SendMessage(message, cmd.Source);
             }
             catch (HttpClientException)
             {

@@ -9,7 +9,7 @@ namespace Norbert.Modules.Maps.Tests
 {
     [TestClass]
     [SuppressMessage("ReSharper", "UnusedVariable")]
-    public class StaticMapsTests
+    public class MapListenerTests
     {
         private const string ValidCmd = "map of bristol";
         private const string StaticUrl = "https://example.org";
@@ -31,7 +31,7 @@ namespace Norbert.Modules.Maps.Tests
                 .Setup(m => m.GetStaticUrlAsync(It.IsAny<string>()))
                 .ReturnsAsync(StaticUrl);
 
-            var staticMaps = new StaticMaps(_mockChatClient.Object, _mockMapsClient.Object);
+            var listener = new MapListener(_mockChatClient.Object, _mockMapsClient.Object);
 
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
@@ -46,7 +46,7 @@ namespace Norbert.Modules.Maps.Tests
         [TestMethod]
         public void Command_Received_Non_Match_Or_Empty_Ignored()
         {
-            var staticMaps = new StaticMaps(_mockChatClient.Object, _mockMapsClient.Object);
+            var listener = new MapListener(_mockChatClient.Object, _mockMapsClient.Object);
 
             var cmd = new CommandEventArgs(null, null, "doughnut");
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
@@ -65,7 +65,7 @@ namespace Norbert.Modules.Maps.Tests
                 .Setup(m => m.GetStaticUrlAsync(It.IsAny<string>()))
                 .ReturnsAsync(StaticUrl);
 
-            var staticMaps = new StaticMaps(_mockChatClient.Object, _mockMapsClient.Object);
+            var listener = new MapListener(_mockChatClient.Object, _mockMapsClient.Object);
 
             var cmd = new CommandEventArgs(null, null, ValidCmd + " ");
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);
@@ -80,7 +80,7 @@ namespace Norbert.Modules.Maps.Tests
                 .Setup(m => m.GetStaticUrlAsync(It.IsAny<string>()))
                 .Throws(new HttpClientException(null, null));
 
-            var staticMaps = new StaticMaps(_mockChatClient.Object, _mockMapsClient.Object);
+            var listener = new MapListener(_mockChatClient.Object, _mockMapsClient.Object);
 
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
             _mockChatClient.Raise(m => m.CommandReceived += null, cmd);

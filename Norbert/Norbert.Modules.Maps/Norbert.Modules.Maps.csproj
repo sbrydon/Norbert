@@ -55,9 +55,9 @@
     <Compile Include="MapsModule.cs" />
     <Compile Include="StaticMapUrl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticMaps.cs" />
+    <Compile Include="MapListener.cs" />
     <Compile Include="Tests\MapsModuleTests.cs" />
-    <Compile Include="Tests\StaticMapsTests.cs" />
+    <Compile Include="Tests\MapListenerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Config.example.json" />

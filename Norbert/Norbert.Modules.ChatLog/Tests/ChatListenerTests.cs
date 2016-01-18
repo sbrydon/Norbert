@@ -9,7 +9,7 @@ namespace Norbert.Modules.ChatLog.Tests
 {
     [TestClass]
     [SuppressMessage("ReSharper", "UnusedVariable")]
-    public class ChatLoggerTests
+    public class ChatListenerTests
     {
         private Mock<IFileSystem> _mockFileSystem;
         private Mock<IChatClient> _mockClient;
@@ -26,7 +26,7 @@ namespace Norbert.Modules.ChatLog.Tests
         [TestMethod]
         public void Message_Received_Appends_To_Log_File()
         {
-            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var listener = new ChatListener(_mockFileSystem.Object, _mockClient.Object, _config);
             var msg = new MessageEventArgs(false, "#chan1", "JIM", "HELLO");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
@@ -42,7 +42,7 @@ namespace Norbert.Modules.ChatLog.Tests
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
 
-            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var listener = new ChatListener(_mockFileSystem.Object, _mockClient.Object, _config);
             var msg = new MessageEventArgs(false, "", "", "");
             _mockClient.Raise(m => m.MessageReceived += null, msg);
 
@@ -52,7 +52,7 @@ namespace Norbert.Modules.ChatLog.Tests
         [TestMethod]
         public void Message_Sent_Appends_To_Log_File()
         {
-            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var listener = new ChatListener(_mockFileSystem.Object, _mockClient.Object, _config);
             var msg = new MessageEventArgs(false, "#chan1", "NORBERT", "WELCOME");
             _mockClient.Raise(m => m.MessageSent += null, msg);
 
@@ -68,7 +68,7 @@ namespace Norbert.Modules.ChatLog.Tests
                 .Setup(m => m.AppendText(It.IsAny<string>(), It.IsAny<string>()))
                 .Throws(new Exception());
 
-            var logger = new ChatLogger(_mockFileSystem.Object, _mockClient.Object, _config);
+            var listener = new ChatListener(_mockFileSystem.Object, _mockClient.Object, _config);
             var msg = new MessageEventArgs(false, "", "", "");
             _mockClient.Raise(m => m.MessageSent += null, msg);
 

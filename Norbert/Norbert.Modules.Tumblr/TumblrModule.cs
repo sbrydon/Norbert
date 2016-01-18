@@ -7,14 +7,14 @@ namespace Norbert.Modules.Tumblr
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (TumblrModule));
         // ReSharper disable once NotAccessedField.Local
-        private TumblrPhotos _tumblrPhotos;
+        private TumblrListener _tumblrListener;
 
         public void Loaded(IConfigLoader configLoader, IChatClient chatClient, 
             IHttpClient httpClient, IFileSystem fileSystem, IRandomiser randomiser)
         {
             var config = LoadConfig(configLoader);
             var tumblrClient = new TumblrClient(httpClient, config.ApiKey);
-            _tumblrPhotos = new TumblrPhotos(chatClient, tumblrClient, randomiser);
+            _tumblrListener = new TumblrListener(chatClient, tumblrClient, randomiser);
         }
 
         public void Unloaded()

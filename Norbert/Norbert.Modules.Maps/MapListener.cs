@@ -6,9 +6,9 @@ using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.Maps
 {
-    public class StaticMaps
+    public class MapListener
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (StaticMaps));
+        private static readonly ILog Log = LogManager.GetLogger(typeof (MapListener));
 
         private static readonly Regex Regex =
             new Regex(@"map\s*(?:of\s*)?(?<place>.*)", RegexOptions.IgnoreCase);
@@ -16,7 +16,7 @@ namespace Norbert.Modules.Maps
         private readonly IChatClient _chatClient;
         private readonly IMapsClient _mapsClient;
 
-        public StaticMaps(IChatClient chatClient, IMapsClient mapsClient)
+        public MapListener(IChatClient chatClient, IMapsClient mapsClient)
         {
             _chatClient = chatClient;
             _mapsClient = mapsClient;

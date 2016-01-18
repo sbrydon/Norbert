@@ -7,14 +7,14 @@ namespace Norbert.Modules.Maps
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (MapsModule));
         // ReSharper disable once NotAccessedField.Local
-        private StaticMaps _staticMaps;
+        private MapListener _mapListener;
 
         public void Loaded(IConfigLoader configLoader, IChatClient chatClient, 
             IHttpClient httpClient, IFileSystem fileSystem, IRandomiser randomiser)
         {
             var config = LoadConfig(configLoader);
             var mapsClient = new MapsClient(httpClient, config.ApiKey);
-            _staticMaps = new StaticMaps(chatClient, mapsClient);
+            _mapListener = new MapListener(chatClient, mapsClient);
         }
 
         public void Unloaded()

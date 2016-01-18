@@ -53,9 +53,9 @@
     <Compile Include="ITumblrClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\TumblrModuleTests.cs" />
-    <Compile Include="Tests\TumblrPhotosTests.cs" />
+    <Compile Include="Tests\TumblrListenerTests.cs" />
     <Compile Include="TumblrClient.cs" />
-    <Compile Include="TumblrPhotos.cs" />
+    <Compile Include="TumblrListener.cs" />
     <Compile Include="TumblrModule.cs" />
   </ItemGroup>
   <ItemGroup>

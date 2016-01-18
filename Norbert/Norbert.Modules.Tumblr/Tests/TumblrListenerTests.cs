@@ -11,7 +11,7 @@ namespace Norbert.Modules.Tumblr.Tests
 {
     [TestClass]
     [SuppressMessage("ReSharper", "UnusedVariable")]
-    public class TumblrPhotosTests
+    public class TumblrListenerTests
     {
         private const string ValidCmd = "tumblr of burger";
 
@@ -42,7 +42,7 @@ namespace Norbert.Modules.Tumblr.Tests
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
@@ -58,7 +58,7 @@ namespace Norbert.Modules.Tumblr.Tests
         [TestMethod]
         public void Command_Received_Non_Match_Or_Empty_Ignored()
         {
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs(null, null, "baguette");
@@ -78,7 +78,7 @@ namespace Norbert.Modules.Tumblr.Tests
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs(null, null, ValidCmd);
@@ -104,7 +104,7 @@ namespace Norbert.Modules.Tumblr.Tests
             _mockTumblrClient.Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), expBefore, It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs(null, null, ValidCmd);
@@ -121,7 +121,7 @@ namespace Norbert.Modules.Tumblr.Tests
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(_photoPosts);
 
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs(null, null, ValidCmd + " ");
@@ -138,7 +138,7 @@ namespace Norbert.Modules.Tumblr.Tests
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .Throws(new HttpClientException(null, null));
 
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
@@ -155,7 +155,7 @@ namespace Norbert.Modules.Tumblr.Tests
                 .Setup(m => m.GetPhotoPostsAsync(It.IsAny<string>(), It.IsAny<DateTime>(), It.IsAny<int>()))
                 .ReturnsAsync(new List<dynamic>());
 
-            var tumblrPhotos = new TumblrPhotos(_mockChatClient.Object, _mockTumblrClient.Object,
+            var listener = new TumblrListener(_mockChatClient.Object, _mockTumblrClient.Object,
                 _mockRandomiser.Object);
 
             var cmd = new CommandEventArgs("#chan1", "JIM", ValidCmd);
