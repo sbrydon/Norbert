@@ -20,8 +20,8 @@ namespace Norbert.Irc
             _client = new IrcClient(serverAddress, new IrcUser(nick, user));
             _client.ConnectionComplete += (s, e) => ConnectionComplete(s, e);
 
-            _client.RawMessageSent += (s, e) => RawMessageReceived(s, e);
-            _client.RawMessageRecieved += (s, e) => RawMessageSent(s, e);
+            _client.RawMessageSent += (s, e) => RawMessageSent(s, e);
+            _client.RawMessageRecieved += (s, e) => RawMessageReceived(s, e);
 
             _client.PrivateMessageRecieved += delegate(object s, ChatSharp.Events.PrivateMessageEventArgs e)
             {

@@ -35,7 +35,7 @@ namespace Norbert.Irc
 
             _adapter.RawMessageReceived += delegate (object s, RawMessageEventArgs e)
             {
-                if (e.Message.Contains("PONG"))
+                if (e.Message.Contains("PING"))
                     return;
 
                 Log.Debug($"<- {e.Message}");
@@ -43,7 +43,7 @@ namespace Norbert.Irc
 
             _adapter.RawMessageSent += delegate (object s, RawMessageEventArgs e)
             {
-                if (e.Message.Contains("PING"))
+                if (e.Message.Contains("PONG"))
                     return;
 
                 Log.Debug($"-> {e.Message}");
@@ -82,7 +82,6 @@ namespace Norbert.Irc
 
         public void SendMessage(string message, params string[] destinations)
         {
-            Log.Debug($"Sending: '{message}' -> {string.Join(",", destinations)}");
             _adapter.SendMessage(message, destinations);
 
             var nick = _adapter.Nick;
