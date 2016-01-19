@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Common", "Norbert.Modules.Common\Norbert.Modules.Common.csproj", "{E3318474-7D7F-42FB-B6FC-FE73D9301F97}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Tests", "Norbert.Tests\Norbert.Tests.csproj", "{04B34B81-B0EF-4032-8519-6B44847A7933}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Maps", "Norbert.Modules.Maps\Norbert.Modules.Maps.csproj", "{FB71B542-8752-48AC-B9E0-CE9E05D45D34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Norbert.Modules.Music", "Norbert.Modules.Music\Norbert.Modules.Music.csproj", "{59F09447-4675-4DEF-A822-DA73FEC6A215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB71B542-8752-48AC-B9E0-CE9E05D45D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59F09447-4675-4DEF-A822-DA73FEC6A215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F09447-4675-4DEF-A822-DA73FEC6A215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F09447-4675-4DEF-A822-DA73FEC6A215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F09447-4675-4DEF-A822-DA73FEC6A215}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +61,6 @@ Global
 		{3972258B-DC82-4BD1-B035-00EBE8A78970} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
 		{F0AB7034-BB12-4F84-8200-85E9C094ACFC} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
 		{FB71B542-8752-48AC-B9E0-CE9E05D45D34} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
+		{59F09447-4675-4DEF-A822-DA73FEC6A215} = {4FE55419-11BE-4A4D-B65B-822FC6F97F0D}
 	EndGlobalSection
 EndGlobal
