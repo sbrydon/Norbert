@@ -79,7 +79,10 @@ namespace Norbert.Modules.Music
                 var lyrics = await _musixClient.GetLyricsAsync(randomTrack.track_id);
 
                 if (lyrics.restricted == 1)
+                {
+                    tracks.Remove(randomTrack);
                     continue;
+                }
 
                 string artist = randomTrack.artist_name;
                 string track = randomTrack.track_name;
