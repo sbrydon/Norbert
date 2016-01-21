@@ -1,27 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Norbert.Modules.Music
 {
     public class Lyrics
     {
-        public string Artist { get; }
-        public string Track { get; }
-        public string Url { get; }
         public string Snippet { get; }
+        public string Attribution { get; }
 
-        public Lyrics(string artist, string track, string url, dynamic lyrics)
+        public Lyrics(string lyrics, string artist, string track, string url)
         {
-            Artist = artist;
-            Track = track;
-            Url = url;
-
-            IEnumerable<string> lines = lyrics.ToString().Split("\n".ToCharArray());
-            lines = lines
+            var lines = lyrics.Split("\n".ToCharArray())
                 .Where(l => !string.IsNullOrEmpty(l) && !l.Contains("NOT for Commercial use"))
                 .Take(4);
 
             Snippet = string.Join(" 🎵🎵 ", lines);
+            Attribution = $"{track} by {artist} - {url}";
         }
     }
 }

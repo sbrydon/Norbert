@@ -31,18 +31,24 @@ namespace Norbert.Modules.Music
                 .ToList();
         }
 
-        public async Task<dynamic> GetLyricsAsync(dynamic trackId)
+        public async Task<Lyrics> GetLyricsAsync(dynamic track)
         {
-            var q = $"track_id={trackId}&format=json&apikey={_apiKey}";
+            var q = $"track_id={track.track_id}&format=json&apikey={_apiKey}";
             string url = $"{BaseUrl}/track.lyrics.get?{q}";
 
             var lyrics = await _httpClient.GetAsync(url);
-            return lyrics.message.body.lyrics;
-        }
+            lyrics = lyrics.message.body.lyrics;
 
-        public async Task<dynamic> GetShortUrlAsync(string longUrl)
-        {
-            return await _httpClient.GetShortUrlAsync(longUrl);
-        } 
+            if (lyrics.restricted == 1)
+                return null;
+
+            string artist = track.artist_name;
+            string trackName = track.track_name;
+
+            string share = track.track_share_url;
+            url = await _httpClient.GetShortUrlAsync(share);
+
+            return new Lyrics(lyrics.lyrics_body.ToString(), artist, trackName, url);
+        }
     }
 }

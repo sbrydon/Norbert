@@ -7,8 +7,6 @@ using Norbert.Modules.Common.Exceptions;
 
 namespace Norbert.Modules.Music
 {
-    //Move url shortener into common (maybe httpClient.getShortUrl)
-    //Do tests
     public class SingListener
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof (SingListener));
@@ -56,10 +54,8 @@ namespace Norbert.Modules.Music
                     return;
                 }
 
-                _chatClient.SendMessage($"{lyrics.Snippet}", cmd.Source);
-
-                var attribMsg = $"{lyrics.Track} by {lyrics.Artist} - {lyrics.Url}";
-                _chatClient.SendMessage(attribMsg, cmd.Source);
+                _chatClient.SendMessage(lyrics.Snippet, cmd.Source);
+                _chatClient.SendMessage(lyrics.Attribution, cmd.Source);
             }
             catch (HttpClientException)
             {
@@ -76,24 +72,18 @@ namespace Norbert.Modules.Music
             while (tracks.Count > 0)
             {
                 var randomTrack = tracks[_randomiser.NextInt(tracks.Count - 1)];
-                var lyrics = await _musixClient.GetLyricsAsync(randomTrack.track_id);
+                var lyrics = await _musixClient.GetLyricsAsync(randomTrack);
 
-                if (lyrics.restricted == 1)
+                if (lyrics == null)
                 {
                     tracks.Remove(randomTrack);
                     continue;
                 }
 
-                string artist = randomTrack.artist_name;
-                string track = randomTrack.track_name;
-
-                string url = randomTrack.track_share_url;
-                url = await _musixClient.GetShortUrlAsync(url);
-
-                return new Lyrics(artist, track, url, lyrics.lyrics_body);
+                return await _musixClient.GetLyricsAsync(randomTrack);
             }
 
             return null;
-        } 
+        }
     }
 }
