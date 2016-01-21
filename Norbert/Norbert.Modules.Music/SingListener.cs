@@ -74,13 +74,10 @@ namespace Norbert.Modules.Music
                 var randomTrack = tracks[_randomiser.NextInt(tracks.Count - 1)];
                 var lyrics = await _musixClient.GetLyricsAsync(randomTrack);
 
-                if (lyrics == null)
-                {
-                    tracks.Remove(randomTrack);
-                    continue;
-                }
+                if (lyrics != null)
+                    return lyrics;
 
-                return await _musixClient.GetLyricsAsync(randomTrack);
+                tracks.Remove(randomTrack);
             }
 
             return null;
