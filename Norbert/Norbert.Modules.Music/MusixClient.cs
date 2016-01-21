@@ -45,10 +45,10 @@ namespace Norbert.Modules.Music
             string artist = track.artist_name;
             string trackName = track.track_name;
 
-            string share = track.track_share_url;
-            url = await _httpClient.GetShortUrlAsync(share);
+            string shareUrl = track.track_share_url;
+            shareUrl = await _httpClient.GetShortUrlAsync(shareUrl);
 
-            return new Lyrics(lyrics.lyrics_body.ToString(), artist, trackName, url);
+            return new Lyrics(lyrics.lyrics_body.ToString(), artist, trackName, shareUrl);
         }
     }
 }
