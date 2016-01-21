@@ -18,6 +18,7 @@ namespace Norbert.Modules.Tumblr.Tests
         private Mock<IChatClient> _mockChatClient;
         private Mock<ITumblrClient> _mockTumblrClient;
         private Mock<IRandomiser> _mockRandomiser;
+
         private List<dynamic> _photoPosts;
 
         [TestInitialize]
@@ -92,7 +93,7 @@ namespace Norbert.Modules.Tumblr.Tests
         }
 
         [TestMethod]
-        public void Command_Received_Replies_With_Random_Photo_Before_Random_Date_After_2010()
+        public void Command_Received_Match_Replies_With_Random_Photo_Before_Random_Date_After_2010()
         {
             var expMin = new DateTime(2010, 1, 1);
             var expBefore = DateTime.Today.AddDays(-3);
